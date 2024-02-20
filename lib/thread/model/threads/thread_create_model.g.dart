@@ -8,7 +8,7 @@ part of 'thread_create_model.dart';
 
 ThreadCreateModel _$ThreadCreateModelFromJson(Map<String, dynamic> json) =>
     ThreadCreateModel(
-      trainerId: json['trainerId'] as int,
+      userId: json['userId'] as int,
       title: json['title'] as String?,
       isMeetingThread: json['isMeetingThread'] as bool?,
       content: json['content'] as String,
@@ -19,7 +19,7 @@ ThreadCreateModel _$ThreadCreateModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ThreadCreateModelToJson(ThreadCreateModel instance) =>
     <String, dynamic>{
-      'trainerId': instance.trainerId,
+      'userId': instance.userId,
       'title': instance.title,
       'content': instance.content,
       'isMeetingThread': instance.isMeetingThread,
@@ -29,7 +29,7 @@ Map<String, dynamic> _$ThreadCreateModelToJson(ThreadCreateModel instance) =>
 ThreadCreateTempModel _$ThreadCreateTempModelFromJson(
         Map<String, dynamic> json) =>
     ThreadCreateTempModel(
-      trainerId: json['trainerId'] as int?,
+      userId: json['userId'] as int?,
       title: json['title'] as String?,
       content: json['content'] as String,
       assetsPaths: (json['assetsPaths'] as List<dynamic>?)
@@ -51,7 +51,7 @@ ThreadCreateTempModel _$ThreadCreateTempModelFromJson(
 Map<String, dynamic> _$ThreadCreateTempModelToJson(
         ThreadCreateTempModel instance) =>
     <String, dynamic>{
-      'trainerId': instance.trainerId,
+      'userId': instance.userId,
       'title': instance.title,
       'content': instance.content,
       'assetsPaths': instance.assetsPaths,

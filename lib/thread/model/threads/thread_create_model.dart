@@ -5,8 +5,8 @@ part 'thread_create_model.g.dart';
 
 @JsonSerializable()
 class ThreadCreateModel {
-  @JsonKey(name: "trainerId")
-  final int trainerId;
+  @JsonKey(name: "userId")
+  final int userId;
   @JsonKey(name: "title")
   String? title;
   @JsonKey(name: "content")
@@ -17,7 +17,7 @@ class ThreadCreateModel {
   List<GalleryModel>? gallery;
 
   ThreadCreateModel({
-    required this.trainerId,
+    required this.userId,
     this.title,
     this.isMeetingThread,
     required this.content,
@@ -25,14 +25,14 @@ class ThreadCreateModel {
   });
 
   ThreadCreateModel copyWith({
-    int? trainerId,
+    int? userId,
     String? title,
     bool? isMeetingThread,
     String? content,
     List<GalleryModel>? gallery,
   }) =>
       ThreadCreateModel(
-        trainerId: trainerId ?? this.trainerId,
+        userId: userId ?? this.userId,
         title: title ?? this.title,
         content: content ?? this.content,
         isMeetingThread: isMeetingThread ?? this.isMeetingThread,
@@ -47,8 +47,8 @@ class ThreadCreateModel {
 
 @JsonSerializable()
 class ThreadCreateTempModel {
-  @JsonKey(name: "trainerId")
-  int? trainerId;
+  @JsonKey(name: "userId")
+  int? userId;
   @JsonKey(name: "title")
   String? title;
   @JsonKey(name: "content")
@@ -71,7 +71,7 @@ class ThreadCreateTempModel {
   bool isFirstRun;
 
   ThreadCreateTempModel({
-    this.trainerId,
+    this.userId,
     this.title,
     required this.content,
     this.assetsPaths,
@@ -85,7 +85,7 @@ class ThreadCreateTempModel {
   });
 
   ThreadCreateTempModel copyWith({
-    int? trainerId,
+    int? userId,
     String? title,
     String? content,
     List<String>? assetsPaths,
@@ -98,7 +98,7 @@ class ThreadCreateTempModel {
     List<GalleryModel>? gallery,
   }) =>
       ThreadCreateTempModel(
-        trainerId: trainerId ?? this.trainerId,
+        userId: userId ?? this.userId,
         title: title ?? this.title,
         content: content ?? this.content,
         assetsPaths: assetsPaths ?? this.assetsPaths,

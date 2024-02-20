@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'thread_repository.dart';
+part of 'thread_comment_repository.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'thread_repository.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _ThreadRepository implements ThreadRepository {
-  _ThreadRepository(
+class _ThreadCommentRepository implements ThreadCommentRepository {
+  _ThreadCommentRepository(
     this._dio, {
     this.baseUrl,
   });
@@ -19,7 +19,8 @@ class _ThreadRepository implements ThreadRepository {
   String? baseUrl;
 
   @override
-  Future<CreateRespModel> postThread({required ThreadCreateModel model}) async {
+  Future<CreateRespModel> postComment(
+      {required ThreadCommentCreateModel model}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -34,7 +35,7 @@ class _ThreadRepository implements ThreadRepository {
     )
             .compose(
               _dio.options,
-              '/threads',
+              '/comments',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -48,38 +49,8 @@ class _ThreadRepository implements ThreadRepository {
   }
 
   @override
-  Future<ThreadListModel> getThreads(
-      {required ThreadGetListParamsModel params}) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(params.toJson());
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ThreadListModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/threads',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = ThreadListModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<ThreadUserListModel> getThreadUsers(
-      {required GetThreadUserListParams model}) async {
+  Future<ThreadCommentListModel> getComments(
+      {required CommentGetListParamsModel model}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(model.toJson());
@@ -87,14 +58,14 @@ class _ThreadRepository implements ThreadRepository {
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ThreadUserListModel>(Options(
+        _setStreamType<ThreadCommentListModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/threads/users',
+              '/comments',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -103,42 +74,14 @@ class _ThreadRepository implements ThreadRepository {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ThreadUserListModel.fromJson(_result.data!);
+    final value = ThreadCommentListModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ThreadModel> getThreadWithId({required int id}) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ThreadModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/threads/${id}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = ThreadModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<void> putThreadWithId({
+  Future<void> putCommentWithId({
     required int id,
-    required ThreadCreateModel model,
+    required ThreadCommentCreateModel model,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -153,7 +96,7 @@ class _ThreadRepository implements ThreadRepository {
     )
         .compose(
           _dio.options,
-          '/threads/${id}',
+          '/comments/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -165,32 +108,7 @@ class _ThreadRepository implements ThreadRepository {
   }
 
   @override
-  Future<void> putThreadCheckWithId({required int id}) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'PUT',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/threads/${id}/check',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-  }
-
-  @override
-  Future<void> deleteThreadWithId({required int id}) async {
+  Future<void> deleteCommentWithId({required int id}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
@@ -203,7 +121,7 @@ class _ThreadRepository implements ThreadRepository {
     )
         .compose(
           _dio.options,
-          '/threads/${id}',
+          '/comments/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
