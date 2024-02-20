@@ -21,6 +21,7 @@ Trainer _$TrainerFromJson(Map<String, dynamic> json) => Trainer(
       nickname: json['nickname'] as String,
       profileImage: json['profileImage'] as String,
       createdAt: json['createdAt'] as String,
+      meetingLink: json['meetingLink'] as String,
     );
 
 Map<String, dynamic> _$TrainerToJson(Trainer instance) => <String, dynamic>{
@@ -29,4 +30,5 @@ Map<String, dynamic> _$TrainerToJson(Trainer instance) => <String, dynamic>{
       'nickname': instance.nickname,
       'profileImage': instance.profileImage,
       'createdAt': instance.createdAt,
+      'meetingLink': instance.meetingLink,
     };

@@ -100,6 +100,7 @@ dependencies:
   responsive_sizer: ^3.2.0
   emoji_picker_flutter: ^1.6.1
   scrolls_to_top: ^2.1.1
+  scrollable_positioned_list: ^0.3.8
 
   #launch setting
   flutter_native_splash: ^2.2.19

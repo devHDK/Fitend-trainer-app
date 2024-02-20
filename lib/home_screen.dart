@@ -6,6 +6,7 @@ import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/provider/avail_camera_provider.dart';
 import 'package:fitend_trainer_app/home/model/home_screen_state_model.dart';
 import 'package:fitend_trainer_app/home/provider/home_screen_provider.dart';
+import 'package:fitend_trainer_app/meeting/view/schedule_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,7 +21,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  // final GlobalKey<ScheduleScreenState> scheduleScreenKey = GlobalKey();
+  final GlobalKey<ScheduleScreenState> scheduleScreenKey = GlobalKey();
   // final GlobalKey<ThreadScreenState> threadScreenKey = GlobalKey();
 
   List<String> appBarTitle = [
@@ -59,12 +60,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return WillPopScope(
       onWillPop: () async => false,
       child: ScrollsToTop(
-        onScrollsToTop: (event) async {},
+        onScrollsToTop: (event) async {
+          _tapTopLogo(model);
+        },
         child: Scaffold(
           backgroundColor: Pallete.background,
           appBar: LogoAppbar(
             title: appBarTitle[model.tabIndex],
-            tapLogo: () {},
+            tapLogo: () {
+              _tapTopLogo(model);
+            },
           ),
           bottomNavigationBar: BottomAppBar(
             color: Pallete.background,
@@ -99,10 +104,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
-          body: const SizedBox(),
+          body: ScheduleScreen(
+            key: scheduleScreenKey,
+          ),
         ),
       ),
     );
+  }
+
+  void _tapTopLogo(HomeScreenStateModel model) {
+    if (model.tabIndex == 0 && scheduleScreenKey.currentState != null) {
+      scheduleScreenKey.currentState!.tapLogo();
+    }
+    // else if (model.tabIndex == 1 &&
+    //     threadScreenKey.currentState != null) {
+    //   threadScreenKey.currentState!.tapTop();
+    // }
   }
 
   InkWell _tapBarIconButton({
