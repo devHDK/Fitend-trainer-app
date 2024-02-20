@@ -4,7 +4,8 @@ import 'package:fitend_trainer_app/common/component/logo_appbar.dart';
 import 'package:fitend_trainer_app/common/const/aseet_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/provider/avail_camera_provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fitend_trainer_app/home/model/home_screen_state_model.dart';
+import 'package:fitend_trainer_app/home/provider/home_screen_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,10 +20,29 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int _currentIndex = 0;
-
   // final GlobalKey<ScheduleScreenState> scheduleScreenKey = GlobalKey();
   // final GlobalKey<ThreadScreenState> threadScreenKey = GlobalKey();
+
+  List<String> appBarTitle = [
+    'S C H E D U L E',
+    'T H R E A D S',
+    'N O T I F Y',
+    'P R O F I L E',
+  ];
+
+  List<String> activeIcons = [
+    SVGConstants.scheduleActive,
+    SVGConstants.messageActive,
+    SVGConstants.alarmOffActive,
+    SVGConstants.mypageActive,
+  ];
+
+  List<String> unactiveIcons = [
+    SVGConstants.schedule,
+    SVGConstants.message,
+    SVGConstants.alarmOff,
+    SVGConstants.mypage,
+  ];
 
   @override
   void initState() {
@@ -34,6 +54,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // AsyncValue<List<CameraDescription>> camerasAsyncValue =
     ref.watch(availableCamerasProvider);
 
+    final model = ref.watch(homeStateProvider);
+
     return WillPopScope(
       onWillPop: () async => false,
       child: ScrollsToTop(
@@ -41,7 +63,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Scaffold(
           backgroundColor: Pallete.background,
           appBar: LogoAppbar(
-            title: _currentIndex == 0 ? 'P L A N' : 'T H R E A D S',
+            title: appBarTitle[model.tabIndex],
             tapLogo: () {},
           ),
           bottomNavigationBar: BottomAppBar(
@@ -59,50 +81,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        if (mounted) {
-                          setState(() {
-                            _currentIndex = 0;
-                          });
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 10,
-                        ),
-                        child: SvgPicture.asset(
-                          _currentIndex == 0
-                              ? SVGConstants.scheduleActive
-                              : SVGConstants.schedule,
-                        ),
+                    ...List.generate(
+                      4,
+                      (index) => _tapBarIconButton(
+                        model: model,
+                        index: index,
+                        activeIcon: activeIcons[index],
+                        unActiveIcon: unactiveIcons[index],
                       ),
-                    ),
-                    const VerticalDivider(
-                      color: Pallete.gray,
-                      width: 1, // specify the width of the divider
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (mounted) {
-                          setState(() {
-                            _currentIndex = 1;
-                          });
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 10,
-                        ),
-                        child: SvgPicture.asset(
-                          _currentIndex == 1
-                              ? SVGConstants.messageActive
-                              : SVGConstants.message,
-                        ),
-                      ),
-                    ),
+                    )
                   ],
                 ),
                 if (Platform.isAndroid)
@@ -118,11 +105,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  void onTabTapped(int index) {
-    if (mounted) {
-      setState(() {
-        _currentIndex = index;
-      });
-    }
+  InkWell _tapBarIconButton({
+    required HomeScreenStateModel model,
+    required int index,
+    required String activeIcon,
+    required String unActiveIcon,
+  }) {
+    return InkWell(
+      onTap: () {
+        if (mounted) {
+          ref.read(homeStateProvider.notifier).changeTapIndex(index);
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 30,
+          vertical: 10,
+        ),
+        child: SvgPicture.asset(
+          model.tabIndex == index ? activeIcon : unActiveIcon,
+          width: 24,
+          height: 24,
+        ),
+      ),
+    );
   }
 }

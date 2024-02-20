@@ -1,6 +1,7 @@
 class SVGConstants {
   static const String _svgPath = 'asset/icons/';
   static const String alarmOff = '${_svgPath}icon_alarm_off.svg';
+  static const String alarmOffActive = '${_svgPath}icon_alarm_off_active.svg';
   static const String alarmOn = '${_svgPath}icon_alarm_on.svg';
   static const String barbell = '${_svgPath}icon_barbell.svg';
   static const String calendar = '${_svgPath}icon_calendar.svg';
@@ -30,6 +31,7 @@ class SVGConstants {
   static const String message = '${_svgPath}icon_message.svg';
   static const String more = '${_svgPath}icon_more.svg';
   static const String mypage = '${_svgPath}icon_my_page.svg';
+  static const String mypageActive = '${_svgPath}icon_my_page_active.svg';
   static const String next = '${_svgPath}icon_next.svg';
   static const String pauseSmall = '${_svgPath}icon_pause_small.svg';
   static const String pause = '${_svgPath}icon_pause.svg';
