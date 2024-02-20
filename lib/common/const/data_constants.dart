@@ -90,8 +90,8 @@ class URLConstants {
       : simulatorIp;
 
   // static const devIp = 'https://api-dev.fit-end.com/api/web'; //개발 서버
-  static const devIp = 'http://192.168.0.63:4000/api/mobile'; //home
-  // static const devIp = 'http://192.168.0.8:4000/api/mobile'; //company
+  static const devIp = 'http://192.168.0.63:4000/api/web'; //home
+  // static const devIp = 'http://192.168.0.8:4000/api/web'; //company
   static const deployIp = 'https://api-prod.fit-end.com/api/web';
 
 //s3URL
