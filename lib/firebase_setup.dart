@@ -19,6 +19,7 @@ Future<void> setupFlutterNotifications() async {
         'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
+
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   await flutterLocalNotificationsPlugin
