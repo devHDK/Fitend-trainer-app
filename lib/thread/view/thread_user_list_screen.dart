@@ -5,7 +5,7 @@ import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/common/utils/data_utils.dart';
-import 'package:fitend_trainer_app/thread/model/thread_user_list_model.dart';
+import 'package:fitend_trainer_app/thread/model/userlist/thread_user_list_model.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_user_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:fitend_trainer_app/common/dio/dio.dart';
-import 'package:fitend_trainer_app/thread/model/get_thread_user_list_params.dart';
-import 'package:fitend_trainer_app/thread/model/thread_user_list_model.dart';
+import 'package:fitend_trainer_app/thread/model/userlist/get_thread_user_list_params.dart';
+import 'package:fitend_trainer_app/thread/model/userlist/thread_user_list_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
 
