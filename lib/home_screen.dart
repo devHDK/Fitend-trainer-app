@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey<ScheduleScreenState> scheduleScreenKey = GlobalKey();
-  // final GlobalKey<ThreadScreenState> threadScreenKey = GlobalKey();
+  final GlobalKey<ThreadUserListScreenState> threadScreenKey = GlobalKey();
 
   List<String> appBarTitle = [
     'S C H E D U L E',
@@ -57,8 +57,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.watch(availableCamerasProvider);
 
     final model = ref.watch(homeStateProvider);
-
-    print(model.toJson());
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -108,10 +106,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
           body: model.tabIndex == 0
-              ? ScheduleScreen(
-                  key: scheduleScreenKey,
-                )
-              : const ThreadUserListScreen(),
+              ? ScheduleScreen(key: scheduleScreenKey)
+              : ThreadUserListScreen(key: threadScreenKey),
         ),
       ),
     );
@@ -120,11 +116,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _tapTopLogo(HomeScreenStateModel model) {
     if (model.tabIndex == 0 && scheduleScreenKey.currentState != null) {
       scheduleScreenKey.currentState!.tapLogo();
+    } else if (model.tabIndex == 1 && threadScreenKey.currentState != null) {
+      threadScreenKey.currentState!.tapTop();
     }
-    // else if (model.tabIndex == 1 &&
-    //     threadScreenKey.currentState != null) {
-    //   threadScreenKey.currentState!.tapTop();
-    // }
   }
 
   InkWell _tapBarIconButton({

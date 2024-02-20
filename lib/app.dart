@@ -36,6 +36,7 @@ class _AppState extends ConsumerState<App> {
               elevation: 0,
             ),
             scaffoldBackgroundColor: Pallete.background,
+            splashColor: Pallete.background,
           ),
           routerConfig: route,
         );

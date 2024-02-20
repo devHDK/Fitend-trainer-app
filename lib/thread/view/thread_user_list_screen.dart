@@ -18,11 +18,10 @@ class ThreadUserListScreen extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<ThreadUserListScreen> createState() =>
-      _TrainerListExtendScreenState();
+      ThreadUserListScreenState();
 }
 
-class _TrainerListExtendScreenState
-    extends ConsumerState<ThreadUserListScreen> {
+class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen> {
   final _searchController = TextEditingController();
   // final BehaviorSubject<String> _subject = BehaviorSubject<String>();
   final ScrollController _scrollController = ScrollController();
@@ -219,5 +218,9 @@ class _TrainerListExtendScreenState
               style: s1SubTitle.copyWith(color: Colors.white),
             ),
           );
+  }
+
+  void tapTop() {
+    ref.read(threadUserListProvider.notifier).getThreadUsers();
   }
 }

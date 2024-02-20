@@ -1,4 +1,3 @@
-import 'package:fitend_trainer_app/common/utils/data_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'thread_user_list_model.g.dart';

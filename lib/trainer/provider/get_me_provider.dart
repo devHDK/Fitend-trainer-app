@@ -53,7 +53,9 @@ class GetMeStateNotifier extends StateNotifier<TrainerModelBase?> {
     required this.repository,
     required this.storage,
   }) : super(TrainerModelLoading()) {
-    getMe();
+    Future.delayed(const Duration(seconds: 1), () {
+      getMe();
+    });
   }
 
   Future<void> getMe() async {
