@@ -75,7 +75,7 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
     } catch (e) {
       debugPrint('$e');
       if (e is CommonException) {
-        state = ThreadModelError(message: '삭제된 thread 입니다.');
+        state = ThreadModelError(message: '삭제된 스레드 입니다.');
       } else {
         state = ThreadModelError(message: '데이터를 불러올수 없습니다');
       }

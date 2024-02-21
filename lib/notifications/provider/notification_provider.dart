@@ -59,6 +59,7 @@ class NotificationStateNotifier extends StateNotifier<NotificationModelBase> {
         state = NotificationModel(data: response.data, total: response.total);
       }
     } catch (e) {
+      debugPrint('$e');
       state = NotificationModelError(message: '데이터를 불러오지 못했습니다.');
     }
   }

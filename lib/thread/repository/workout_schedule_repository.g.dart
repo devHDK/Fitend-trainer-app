@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'notifications_repository.dart';
+part of 'workout_schedule_repository.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'notifications_repository.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _NotificationsRepository implements NotificationsRepository {
-  _NotificationsRepository(
+class _WorkoutScheduleRepository implements WorkoutScheduleRepository {
+  _WorkoutScheduleRepository(
     this._dio, {
     this.baseUrl,
   });
@@ -19,8 +19,8 @@ class _NotificationsRepository implements NotificationsRepository {
   String? baseUrl;
 
   @override
-  Future<NotificationModel> getNotifications(
-      {required NotificationConfirmParams params}) async {
+  Future<WorkoutList> getWorkoutSchedules(
+      {required WorkoutSchedulePagenateParams params}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(params.toJson());
@@ -28,14 +28,14 @@ class _NotificationsRepository implements NotificationsRepository {
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<NotificationModel>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<WorkoutList>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/notifications',
+              '/workoutSchedules',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -44,26 +44,27 @@ class _NotificationsRepository implements NotificationsRepository {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = NotificationModel.fromJson(_result.data!);
+    final value = WorkoutList.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<NotificationConfirmResponse> getNotificationsConfirm() async {
+  Future<WorkoutResultModel> getWorkout(
+      {required int workoutScheduleId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NotificationConfirmResponse>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<WorkoutResultModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/notifications/confirm',
+              '/workoutSchedules/${workoutScheduleId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -72,60 +73,8 @@ class _NotificationsRepository implements NotificationsRepository {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = NotificationConfirmResponse.fromJson(_result.data!);
+    final value = WorkoutResultModel.fromJson(_result.data!);
     return value;
-  }
-
-  @override
-  Future<void> putNotificationsConfirm() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'PUT',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/notifications/confirm',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-  }
-
-  @override
-  Future<void> putNotificationsSetting(
-      {required NotificationSettingParams body}) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accessToken': 'true'};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
-    await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'PUT',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/notifications/settings',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

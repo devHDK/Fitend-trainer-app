@@ -248,4 +248,14 @@ class GetMeStateNotifier extends StateNotifier<TrainerModelBase?> {
       return '';
     }
   }
+
+  void changeIsNotification({
+    required bool isNotification,
+  }) {
+    final pstate = state as TrainerModel;
+
+    state = pstate.copyWith(
+      trainer: pstate.trainer.copyWith(isNotification: isNotification),
+    );
+  }
 }

@@ -96,12 +96,14 @@ class NotificationData {
 
 @JsonSerializable()
 class Info {
-  int? workoutScheduleId;
-  int? reservationId;
+  int? userId;
+  String? gender;
+  String? nickname;
   int? threadId;
   Info({
-    this.workoutScheduleId,
-    this.reservationId,
+    this.userId,
+    this.gender,
+    this.nickname,
     this.threadId,
   });
 

@@ -21,6 +21,7 @@ import 'package:fitend_trainer_app/thread/provider/thread_create_provider.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_detail_provider.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_provider.dart';
 import 'package:fitend_trainer_app/thread/view/media_page_screen.dart';
+import 'package:fitend_trainer_app/thread/view/schedule_result_screen.dart';
 import 'package:fitend_trainer_app/thread/view/thread_create_screen.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
@@ -279,14 +280,17 @@ class _ThreadDetailState extends ConsumerState<ThreadDetail> {
           if (model.type == ThreadType.record.name && model.workoutInfo != null)
             GestureDetector(
               onTap: () {
-                // Navigator.of(context).push(
-                //   CupertinoPageRoute(
-                //     builder: (context) => ScheduleResultScreen(
-                //       workoutScheduleId: model.workoutInfo!.workoutScheduleId,
-                //     ),
-                //     fullscreenDialog: true,
-                //   ),
-                // );
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => ScheduleResultScreen(
+                      workoutScheduleId: model.workoutInfo!.workoutScheduleId,
+                      title: model.workoutInfo!.title,
+                      subTitle: model.workoutInfo!.subTitle,
+                      userId: model.user.id,
+                    ),
+                    fullscreenDialog: true,
+                  ),
+                );
               },
               child: RecordTypeThread(
                 height: 216,

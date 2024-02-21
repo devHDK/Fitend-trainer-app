@@ -22,6 +22,7 @@ Trainer _$TrainerFromJson(Map<String, dynamic> json) => Trainer(
       profileImage: json['profileImage'] as String,
       createdAt: json['createdAt'] as String,
       meetingLink: json['meetingLink'] as String,
+      isNotification: json['isNotification'] as bool,
     );
 
 Map<String, dynamic> _$TrainerToJson(Trainer instance) => <String, dynamic>{
@@ -31,4 +32,5 @@ Map<String, dynamic> _$TrainerToJson(Trainer instance) => <String, dynamic>{
       'profileImage': instance.profileImage,
       'createdAt': instance.createdAt,
       'meetingLink': instance.meetingLink,
+      'isNotification': instance.isNotification,
     };

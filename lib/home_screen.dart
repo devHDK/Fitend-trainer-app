@@ -7,7 +7,9 @@ import 'package:fitend_trainer_app/common/provider/avail_camera_provider.dart';
 import 'package:fitend_trainer_app/home/model/home_screen_state_model.dart';
 import 'package:fitend_trainer_app/home/provider/home_screen_provider.dart';
 import 'package:fitend_trainer_app/meeting/view/schedule_screen.dart';
+import 'package:fitend_trainer_app/notifications/view/notification_screen.dart';
 import 'package:fitend_trainer_app/thread/view/thread_user_list_screen.dart';
+import 'package:fitend_trainer_app/trainer/view/mypage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -107,7 +109,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           body: model.tabIndex == 0
               ? ScheduleScreen(key: scheduleScreenKey)
-              : ThreadUserListScreen(key: threadScreenKey),
+              : model.tabIndex == 1
+                  ? ThreadUserListScreen(key: threadScreenKey)
+                  : model.tabIndex == 2
+                      ? const NotificationScreen()
+                      : const MyPageScreen(),
         ),
       ),
     );

@@ -52,6 +52,8 @@ class Trainer {
   final String createdAt;
   @JsonKey(name: "meetingLink")
   final String meetingLink;
+  @JsonKey(name: "isNotification")
+  final bool isNotification;
 
   Trainer({
     required this.id,
@@ -60,6 +62,7 @@ class Trainer {
     required this.profileImage,
     required this.createdAt,
     required this.meetingLink,
+    required this.isNotification,
   });
 
   Trainer copyWith({
@@ -69,6 +72,7 @@ class Trainer {
     String? profileImage,
     String? createdAt,
     String? meetingLink,
+    bool? isNotification,
   }) =>
       Trainer(
         id: id ?? this.id,
@@ -77,6 +81,7 @@ class Trainer {
         profileImage: profileImage ?? this.profileImage,
         createdAt: createdAt ?? this.createdAt,
         meetingLink: meetingLink ?? this.meetingLink,
+        isNotification: isNotification ?? this.isNotification,
       );
 
   factory Trainer.fromJson(Map<String, dynamic> json) =>

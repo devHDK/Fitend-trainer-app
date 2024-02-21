@@ -3,12 +3,17 @@ import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/common/utils/shared_pref_utils.dart';
+import 'package:fitend_trainer_app/home/provider/home_screen_provider.dart';
 import 'package:fitend_trainer_app/notifications/component/notification_cell.dart';
 import 'package:fitend_trainer_app/notifications/model/notification_model.dart';
 import 'package:fitend_trainer_app/notifications/provider/notification_home_screen_provider.dart';
 import 'package:fitend_trainer_app/notifications/provider/notification_provider.dart';
 import 'package:fitend_trainer_app/notifications/repository/notifications_repository.dart';
+import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
+import 'package:fitend_trainer_app/thread/view/thread_detail_screen.dart';
+import 'package:fitend_trainer_app/thread/view/thread_screen.dart';
 import 'package:fitend_trainer_app/trainer/provider/go_router.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,6 +42,12 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
 
     controller.addListener(listener);
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  void fetch() async {
+    if (mounted && ref.read(notificationProvider) is NotificationModelError) {
+      await ref.read(notificationProvider.notifier).paginate();
+    }
   }
 
   @override
@@ -133,7 +144,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
         child: DialogWidgets.oneButtonDialog(
           message: state.message,
           confirmText: '확인',
-          confirmOnTap: () => context.pop(),
+          confirmOnTap: () {
+            ref.read(notificationProvider.notifier).paginate(start: 0);
+          },
         ),
       );
     }
@@ -176,20 +189,28 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
                 }
 
                 return GestureDetector(
-                  onTap: notification.data![index].type == 'thread' &&
-                          notification.data![index].info != null &&
-                          notification.data![index].info!.threadId != null
+                  onTap: notification.data![index].type == 'meeting'
                       ? () {
-                          // _pushThreadScreen(context, index);
                           ref
-                              .read(notificationProvider.notifier)
-                              .putNotificationChcek(index);
+                              .read(homeStateProvider.notifier)
+                              .changeTapIndex(0);
                         }
-                      : () {
-                          ref
-                              .read(notificationProvider.notifier)
-                              .putNotificationChcek(index);
-                        },
+                      : notification.data![index].type == 'thread' &&
+                              notification.data![index].info != null &&
+                              notification.data![index].info!.threadId != null
+                          ? () {
+                              _pushThreadDetailScreen(context, index);
+                              ref
+                                  .read(notificationProvider.notifier)
+                                  .putNotificationChcek(index);
+                            }
+                          : () {
+                              _pushThreadScreen(context, index);
+
+                              ref
+                                  .read(notificationProvider.notifier)
+                                  .putNotificationChcek(index);
+                            },
                   child: NotificationCell(
                     notificationData: notification.data![index],
                   ),
@@ -199,12 +220,33 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
           );
   }
 
-  // void _pushThreadScreen(BuildContext context, int index) {
-  //   Navigator.of(context).push(
-  //     CupertinoPageRoute(
-  //       builder: (context) => ThreadDetailScreen(
-  //           threadId: notification.data![index].info!.threadId!),
-  //     ),
-  //   );
-  // }
+  void _pushThreadDetailScreen(BuildContext context, int index) {
+    Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => ThreadDetailScreen(
+          threadId: notification.data![index].info!.threadId!,
+          user: ThreadUser(
+            id: notification.data![index].info!.userId!,
+            nickname: notification.data![index].info!.nickname!,
+            gender: notification.data![index].info!.gender!,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _pushThreadScreen(BuildContext context, int index) {
+    Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => ThreadScreen(
+          titleContent: '',
+          user: ThreadUser(
+            id: notification.data![index].info!.userId!,
+            nickname: notification.data![index].info!.nickname!,
+            gender: notification.data![index].info!.gender!,
+          ),
+        ),
+      ),
+    );
+  }
 }
