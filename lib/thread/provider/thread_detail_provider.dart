@@ -303,7 +303,7 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
     try {
       await commentRepository.deleteCommentWithId(id: commentId);
 
-      threadListState.updateUserCommentCount(family.threadId, -1);
+      threadListState.updateTrainerCommentCount(family.threadId, -1);
 
       final pstate = state as ThreadModel;
 

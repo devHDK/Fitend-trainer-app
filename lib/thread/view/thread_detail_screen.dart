@@ -172,6 +172,7 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
     }
 
     final model = state as ThreadModel;
+    final trainerModel = trainerState as TrainerModel;
 
     return Scaffold(
       backgroundColor: Pallete.background,
@@ -320,7 +321,7 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
               ],
             ),
           ),
-          _bottomInputBox(commentState, model, family, context),
+          _bottomInputBox(commentState, model, trainerModel, family, context),
         ],
       ),
     );
@@ -329,6 +330,7 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
   Positioned _bottomInputBox(
     ThreadCommentCreateTempModel commentState,
     ThreadModel model,
+    TrainerModel trainer,
     ThreadFamilyModel family,
     BuildContext context,
   ) {
@@ -376,9 +378,8 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
                     height: 34,
                     child: CircleProfileImage(
                       image: CachedNetworkImage(
-                        imageUrl: model.user.gender == 'male'
-                            ? URLConstants.maleProfileUrl
-                            : URLConstants.femaleProfileUrl,
+                        imageUrl:
+                            '${URLConstants.s3Url}${trainer.trainer.profileImage}',
                       ),
                       borderRadius: 17,
                     ),

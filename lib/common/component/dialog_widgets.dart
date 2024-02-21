@@ -288,42 +288,40 @@ class DialogWidgets {
   }) {
     return showCupertinoModalPopup(
       context: context,
-      builder: (context) => SafeArea(
-        child: SizedBox(
-          height: 250,
-          child: EmojiPicker(
-            onEmojiSelected: onEmojiSelect,
-            config: Config(
-              columns: 7,
-              emojiSizeMax: 32 *
-                  (foundation.defaultTargetPlatform == TargetPlatform.iOS
-                      ? 1.30
-                      : 1.0),
-              verticalSpacing: 0,
-              horizontalSpacing: 0,
-              gridPadding: EdgeInsets.zero,
-              initCategory: Category.RECENT,
-              bgColor: Pallete.background,
-              indicatorColor: Pallete.point,
-              iconColor: Colors.grey,
-              iconColorSelected: Pallete.point,
-              backspaceColor: Pallete.point,
-              skinToneDialogBgColor: Colors.white,
-              skinToneIndicatorColor: Colors.grey,
-              enableSkinTones: true,
-              recentTabBehavior: RecentTabBehavior.RECENT,
-              recentsLimit: 28,
-              noRecents: const Text(
-                'No Recents',
-                style: TextStyle(fontSize: 20, color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-              loadingIndicator:
-                  const SizedBox.shrink(), // Needs to be const Widget
-              tabIndicatorAnimDuration: kTabScrollDuration,
-              categoryIcons: const CategoryIcons(),
-              buttonMode: ButtonMode.MATERIAL,
+      builder: (context) => SizedBox(
+        height: 250,
+        child: EmojiPicker(
+          onEmojiSelected: onEmojiSelect,
+          config: Config(
+            columns: 7,
+            emojiSizeMax: 32 *
+                (foundation.defaultTargetPlatform == TargetPlatform.iOS
+                    ? 1.30
+                    : 1.0),
+            verticalSpacing: 0,
+            horizontalSpacing: 0,
+            gridPadding: EdgeInsets.zero,
+            initCategory: Category.RECENT,
+            bgColor: Pallete.background,
+            indicatorColor: Pallete.point,
+            iconColor: Colors.grey,
+            iconColorSelected: Pallete.point,
+            backspaceColor: Pallete.point,
+            skinToneDialogBgColor: Colors.white,
+            skinToneIndicatorColor: Colors.grey,
+            enableSkinTones: true,
+            recentTabBehavior: RecentTabBehavior.RECENT,
+            recentsLimit: 28,
+            noRecents: const Text(
+              'No Recents',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+              textAlign: TextAlign.center,
             ),
+            loadingIndicator:
+                const SizedBox.shrink(), // Needs to be const Widget
+            tabIndicatorAnimDuration: kTabScrollDuration,
+            categoryIcons: const CategoryIcons(),
+            buttonMode: ButtonMode.MATERIAL,
           ),
         ),
       ),

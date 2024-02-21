@@ -236,7 +236,7 @@ class CommentCreateStateNotifier
         trainer: trainer,
       );
 
-      threadListState.updateUserCommentCount(threadId, 1);
+      threadListState.updateTrainerCommentCount(threadId, 1);
 
       init();
 
