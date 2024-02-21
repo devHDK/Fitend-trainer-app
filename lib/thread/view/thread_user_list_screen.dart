@@ -5,8 +5,11 @@ import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/common/utils/data_utils.dart';
+import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
 import 'package:fitend_trainer_app/thread/model/userlist/thread_user_list_model.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_user_list_provider.dart';
+import 'package:fitend_trainer_app/thread/view/thread_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -137,7 +140,19 @@ class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen> {
                       }
 
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) => ThreadScreen(
+                                user: ThreadUser(
+                                    id: model.id,
+                                    nickname: model.nickname,
+                                    gender: model.gender),
+                                titleContent: ticketType,
+                              ),
+                            ),
+                          );
+                        },
                         child: SizedBox(
                           height: 50,
                           child: Row(

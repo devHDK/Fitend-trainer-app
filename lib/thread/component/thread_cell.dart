@@ -585,13 +585,13 @@ class _ThreadCellState extends ConsumerState<ThreadCell> {
         emoji: key,
         count: value,
         isSelected: widget.emojis!.indexWhere((e) {
-              return e.emoji == key && e.userId == widget.user.id;
+              return e.emoji == key && e.trainerId == widget.trainer.id;
             }) >
             -1,
         onTap: () async {
           final result = await ref
               .read(threadProvider(widget.user).notifier)
-              .updateEmoji(widget.id, widget.user.id, key);
+              .updateEmoji(widget.id, widget.trainer.id, key);
 
           try {
             if (result['type'] == 'add') {
@@ -599,12 +599,12 @@ class _ThreadCellState extends ConsumerState<ThreadCell> {
 
               ref
                   .read(threadDetailProvider(family).notifier)
-                  .addThreadEmoji(widget.user.id, null, key, emojiId);
+                  .addThreadEmoji(null, widget.trainer.id, key, emojiId);
             } else if (result['type'] == 'remove') {
               final emojiId = result['emojiId'];
               ref
                   .read(threadDetailProvider(family).notifier)
-                  .removeThreadEmoji(widget.user.id, null, key, emojiId);
+                  .removeThreadEmoji(null, widget.trainer.id, key, emojiId);
             }
           } catch (e) {
             debugPrint('$e');
@@ -626,7 +626,7 @@ class _ThreadCellState extends ConsumerState<ThreadCell> {
             if (emoji != null) {
               final result = await ref
                   .read(threadProvider(widget.user).notifier)
-                  .updateEmoji(widget.id, widget.user.id, emoji.emoji);
+                  .updateEmoji(widget.id, widget.trainer.id, emoji.emoji);
 
               try {
                 if (result['type'] == 'add') {
@@ -635,13 +635,13 @@ class _ThreadCellState extends ConsumerState<ThreadCell> {
                   ref
                       .read(threadDetailProvider(family).notifier)
                       .addThreadEmoji(
-                          widget.user.id, null, emoji.emoji, emojiId);
+                          null, widget.trainer.id, emoji.emoji, emojiId);
                 } else if (result['type'] == 'remove') {
                   final emojiId = result['emojiId'];
                   ref
                       .read(threadDetailProvider(family).notifier)
                       .removeThreadEmoji(
-                          widget.user.id, null, emoji.emoji, emojiId);
+                          null, widget.trainer.id, emoji.emoji, emojiId);
                 }
               } catch (e) {
                 debugPrint('$e');

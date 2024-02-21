@@ -15,6 +15,18 @@ class ThreadFamilyModel {
     required this.user,
   });
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ThreadFamilyModel &&
+        other.threadId == threadId &&
+        other.user == user;
+  }
+
+  @override
+  int get hashCode => threadId.hashCode ^ user.hashCode;
+
   ThreadFamilyModel copyWith({
     int? threadId,
     ThreadUser? user,

@@ -267,7 +267,7 @@ class ThreadCreateStateNotifier extends StateNotifier<ThreadCreateTempModel> {
       threadListState.addThread(
         ThreadModel(
           id: response.id,
-          writerType: 'user',
+          writerType: 'trainer',
           type: 'general',
           title: model.title,
           content: model.content,

@@ -140,7 +140,7 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
   }
 
   Future<Map<dynamic, dynamic>> updateThreadEmoji(
-      int threadId, int userId, String inputEmoji) async {
+      int threadId, int trainerId, String inputEmoji) async {
     try {
       final pstate = state as ThreadModel;
 
@@ -155,19 +155,19 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
 
       if (pstate.emojis != null && pstate.emojis!.isNotEmpty) {
         final emojiIndex = pstate.emojis!.indexWhere((emoji) {
-          return emoji.emoji == inputEmoji && emoji.userId == userId;
+          return emoji.emoji == inputEmoji && emoji.trainerId == trainerId;
         });
         if (emojiIndex == -1) {
           //이모지 추가
-          addThreadEmoji(userId, null, inputEmoji, response.emojiId);
+          addThreadEmoji(null, trainerId, inputEmoji, response.emojiId);
           result['type'] = 'add';
         } else {
           //이모지 취소
-          removeThreadEmoji(userId, null, inputEmoji, response.emojiId);
+          removeThreadEmoji(null, trainerId, inputEmoji, response.emojiId);
           result['type'] = 'remove';
         }
       } else if (pstate.emojis != null && pstate.emojis!.isEmpty) {
-        addThreadEmoji(userId, null, inputEmoji, response.emojiId);
+        addThreadEmoji(null, trainerId, inputEmoji, response.emojiId);
         result['type'] = 'add';
       }
 
@@ -183,7 +183,7 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
   }
 
   Future<Map<dynamic, dynamic>> updateCommentEmoji(
-      int commentId, int userId, String inputEmoji) async {
+      int commentId, int trainerId, String inputEmoji) async {
     try {
       final pstate = state as ThreadModel;
 
@@ -202,17 +202,17 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
       if (pstate.comments!.isNotEmpty) {
         final emojiIndex =
             pstate.comments![commentIndex].emojis!.indexWhere((emoji) {
-          return emoji.emoji == inputEmoji && emoji.userId == userId;
+          return emoji.emoji == inputEmoji && emoji.trainerId == trainerId;
         });
         if (emojiIndex == -1) {
           //이모지 추가
           addCommentEmoji(
-              userId, null, inputEmoji, commentIndex, response.emojiId);
+              null, trainerId, inputEmoji, commentIndex, response.emojiId);
           result['type'] = 'add';
         } else {
           //이모지 취소
           removeCommentEmoji(
-              userId, null, inputEmoji, commentIndex, response.emojiId);
+              null, trainerId, inputEmoji, commentIndex, response.emojiId);
           result['type'] = 'remove';
         }
       }
@@ -289,7 +289,7 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
       if (threadListState.state is ThreadListModel) {
         final pstate = threadListState.state as ThreadListModel;
 
-        final index = pstate.data.indexWhere((e) => e.id == family);
+        final index = pstate.data.indexWhere((e) => e.id == family.threadId);
         if (index != -1) {
           threadListState.removeThreadWithId(family.threadId, index);
         }

@@ -17,6 +17,19 @@ class ThreadUser {
     required this.gender,
   });
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ThreadUser &&
+        other.id == id &&
+        other.nickname == nickname &&
+        other.gender == gender;
+  }
+
+  @override
+  int get hashCode => id.hashCode ^ nickname.hashCode ^ gender.hashCode;
+
   ThreadUser copyWith({
     int? id,
     String? nickname,

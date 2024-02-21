@@ -21,6 +21,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -32,9 +33,11 @@ class ThreadScreen extends ConsumerStatefulWidget {
   const ThreadScreen({
     super.key,
     required this.user,
+    required this.titleContent,
   });
 
   final ThreadUser user;
+  final String titleContent;
 
   @override
   ConsumerState<ThreadScreen> createState() => ThreadScreenState();
@@ -82,7 +85,7 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
 
   void updateBadge() {
     if (mounted) {
-      threadBadgeCountReset();
+      // threadBadgeCountReset();
       // ref.read(notificationHomeProvider.notifier).updateBageCount(0);
     }
   }
@@ -115,16 +118,19 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
           pstate.total > pstate.data.length &&
           !isLoading) {
         //스크롤을 아래로 내렸을때
-        isLoading = true;
 
-        ref
-            .read(threadProvider(widget.user).notifier)
-            .paginate(startIndex: startIndex, fetchMore: true)
-            .then((value) {
-          isLoading = false;
-          if (mounted) {
-            setState(() {});
-          }
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          isLoading = true;
+
+          ref
+              .read(threadProvider(widget.user).notifier)
+              .paginate(startIndex: startIndex, fetchMore: true)
+              .then((value) {
+            isLoading = false;
+            if (mounted) {
+              setState(() {});
+            }
+          });
         });
       }
     }
@@ -195,27 +201,21 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
 
     if (state is ThreadListModelLoading ||
         trainerState is TrainerModelLoading) {
-      return const Scaffold(
-        backgroundColor: Pallete.background,
-        body: Center(
-          child: CircularProgressIndicator(
-            color: Pallete.point,
-          ),
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Pallete.point,
         ),
       );
     }
 
     if (state is ThreadListModelError) {
-      return Scaffold(
-        backgroundColor: Pallete.background,
-        body: Center(
-          child: DialogWidgets.oneButtonDialog(
-            message: '데이터를 불러오지 못했습니다.',
-            confirmText: '새로 고침',
-            confirmOnTap: () {
-              ref.invalidate(threadProvider);
-            },
-          ),
+      return Center(
+        child: DialogWidgets.oneButtonDialog(
+          message: '데이터를 불러오지 못했습니다.',
+          confirmText: '새로 고침',
+          confirmOnTap: () {
+            ref.invalidate(threadProvider);
+          },
         ),
       );
     }
@@ -225,169 +225,196 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
     // final notificationHomeModel = notificationState as NotificationMainModel;
     startIndex = state.data.length;
 
-    return Stack(
-      children: [
-        RefreshIndicator(
-          backgroundColor: Pallete.background,
-          color: Pallete.point,
-          semanticsLabel: '새로고침',
-          onRefresh: () async {
-            await ref
-                .read(threadProvider(widget.user).notifier)
-                .paginate(
-                  startIndex: 0,
-                  isRefetch: true,
-                )
-                .then((value) {
-              itemScrollController.jumpTo(index: 0);
-              isLoading = false;
-            });
-          },
-          child: state.data.isEmpty
-              ? Scaffold(
-                  backgroundColor: Pallete.background,
-                  body: Center(
-                    child: Text(
-                      '아직 코치님과 함께한 쓰레드가 없어요 🙂',
-                      style: s2SubTitle.copyWith(
-                        color: Colors.white,
-                      ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Pallete.background,
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          icon: const Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Icon(Icons.arrow_back)),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              widget.user.nickname,
+              style: h4Headline.copyWith(color: Colors.white),
+            ),
+            Text(
+              widget.titleContent,
+              style: s2SubTitle.copyWith(color: Pallete.lightGray),
+            )
+          ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: Stack(
+        children: [
+          state.data.isEmpty
+              ? Center(
+                  child: Text(
+                    '아직 코치님과 함께한 쓰레드가 없어요 🙂',
+                    style: s2SubTitle.copyWith(
+                      color: Colors.white,
                     ),
                   ),
                 )
-              : ScrollablePositionedList.builder(
-                  // padding: const EdgeInsets.only(left: 28),
-                  itemScrollController: itemScrollController,
-                  initialScrollIndex: state.scrollIndex ?? 0,
-                  itemPositionsListener: itemPositionsListener,
-                  itemCount: state.data.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == state.data.length) {
-                      if (state.data.length == state.total) {
+              : RefreshIndicator(
+                  backgroundColor: Pallete.background,
+                  color: Pallete.point,
+                  semanticsLabel: '새로고침',
+                  onRefresh: () async {
+                    if (mounted) {
+                      isLoading = true;
+
+                      await ref
+                          .read(threadProvider(widget.user).notifier)
+                          .paginate(
+                            startIndex: 0,
+                            isRefetch: true,
+                          )
+                          .then((value) {
+                        itemScrollController.jumpTo(index: 0);
+                        isLoading = false;
+                      });
+                    }
+                  },
+                  child: ScrollablePositionedList.builder(
+                    // padding: const EdgeInsets.only(left: 28),
+                    itemScrollController: itemScrollController,
+                    initialScrollIndex: state.scrollIndex ?? 0,
+                    itemPositionsListener: itemPositionsListener,
+                    itemCount: state.data.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == state.data.length) {
+                        if (state.data.length == state.total) {
+                          return const SizedBox(
+                            height: 100,
+                          );
+                        }
+
                         return const SizedBox(
                           height: 100,
+                          child: Center(
+                            child:
+                                CircularProgressIndicator(color: Pallete.point),
+                          ),
                         );
                       }
 
-                      return const SizedBox(
-                        height: 100,
-                        child: Center(
-                          child:
-                              CircularProgressIndicator(color: Pallete.point),
-                        ),
-                      );
-                    }
+                      final model = state.data[index];
 
-                    final model = state.data[index];
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (index == 0 ||
-                            DataUtils.getDateFromDateTime(
-                                    DateTime.parse(model.createdAt)
-                                        .toUtc()
-                                        .toLocal()) !=
-                                DataUtils.getDateFromDateTime(DateTime.parse(
-                                        state.data[index - 1].createdAt)
-                                    .toUtc()
-                                    .toLocal()))
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 28),
-                            child: Text(
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (index == 0 ||
                               DataUtils.getDateFromDateTime(
-                                          DateTime.parse(model.createdAt)
-                                              .toUtc()
-                                              .toLocal()) ==
-                                      DataUtils.getDateFromDateTime(
-                                          DateTime.now())
-                                  ? '오늘'
-                                  : DataUtils.getDateFromDateTime(
-                                              DateTime.parse(model.createdAt)
-                                                  .toUtc()
-                                                  .toLocal()) ==
-                                          DataUtils.getDateFromDateTime(
-                                              DateTime.now().subtract(
-                                                  const Duration(days: 1)))
-                                      ? '어제'
-                                      : DataUtils.getMonthDayFromDateTime(
-                                          DateTime.parse(model.createdAt)
-                                              .toUtc()
-                                              .toLocal()),
-                              style: h4Headline.copyWith(color: Colors.white),
+                                      DateTime.parse(model.createdAt)
+                                          .toUtc()
+                                          .toLocal()) !=
+                                  DataUtils.getDateFromDateTime(DateTime.parse(
+                                          state.data[index - 1].createdAt)
+                                      .toUtc()
+                                      .toLocal()))
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 28),
+                              child: Text(
+                                DataUtils.getDateFromDateTime(
+                                            DateTime.parse(model.createdAt)
+                                                .toUtc()
+                                                .toLocal()) ==
+                                        DataUtils.getDateFromDateTime(
+                                            DateTime.now())
+                                    ? '오늘'
+                                    : DataUtils.getDateFromDateTime(
+                                                DateTime.parse(model.createdAt)
+                                                    .toUtc()
+                                                    .toLocal()) ==
+                                            DataUtils.getDateFromDateTime(
+                                                DateTime.now().subtract(
+                                                    const Duration(days: 1)))
+                                        ? '어제'
+                                        : DataUtils.getMonthDayFromDateTime(
+                                            DateTime.parse(model.createdAt)
+                                                .toUtc()
+                                                .toLocal()),
+                                style: h4Headline.copyWith(color: Colors.white),
+                              ),
+                            ),
+                          GestureDetector(
+                            onTap: () =>
+                                Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => ThreadDetailScreen(
+                                threadId: model.id,
+                                user: widget.user,
+                              ),
+                            )),
+                            child: ThreadCell(
+                              id: model.id,
+                              title: model.title,
+                              content: model.content,
+                              profileImageUrl: model.writerType == 'trainer'
+                                  ? '${URLConstants.s3Url}${model.trainer.profileImage}'
+                                  : model.user.gender == 'male'
+                                      ? URLConstants.maleProfileUrl
+                                      : URLConstants.femaleProfileUrl,
+                              nickname: model.writerType == 'trainer'
+                                  ? model.trainer.nickname
+                                  : model.user.nickname,
+                              dateTime: DateTime.parse(model.createdAt)
+                                  .toUtc()
+                                  .toLocal(),
+                              gallery: model.gallery,
+                              emojis: model.emojis,
+                              userCommentCount: model.userCommentCount != null
+                                  ? model.userCommentCount!
+                                  : 0,
+                              trainerCommentCount:
+                                  model.trainerCommentCount != null
+                                      ? model.trainerCommentCount!
+                                      : 0,
+                              user: model.user,
+                              trainer: model.trainer,
+                              writerType: model.writerType,
+                              threadType: model.type,
+                              workoutInfo: model.workoutInfo,
                             ),
                           ),
-                        GestureDetector(
-                          onTap: () =>
-                              Navigator.of(context).push(CupertinoPageRoute(
-                            builder: (context) => ThreadDetailScreen(
-                              threadId: model.id,
-                              user: widget.user,
-                            ),
-                          )),
-                          child: ThreadCell(
-                            id: model.id,
-                            title: model.title,
-                            content: model.content,
-                            profileImageUrl: model.writerType == 'trainer'
-                                ? '${URLConstants.s3Url}${model.trainer.profileImage}'
-                                : model.user.gender == 'male'
-                                    ? URLConstants.maleProfileUrl
-                                    : URLConstants.femaleProfileUrl,
-                            nickname: model.writerType == 'trainer'
-                                ? model.trainer.nickname
-                                : model.user.nickname,
-                            dateTime: DateTime.parse(model.createdAt)
-                                .toUtc()
-                                .toLocal(),
-                            gallery: model.gallery,
-                            emojis: model.emojis,
-                            userCommentCount: model.userCommentCount != null
-                                ? model.userCommentCount!
-                                : 0,
-                            trainerCommentCount:
-                                model.trainerCommentCount != null
-                                    ? model.trainerCommentCount!
-                                    : 0,
-                            user: model.user,
-                            trainer: model.trainer,
-                            writerType: model.writerType,
-                            threadType: model.type,
-                            workoutInfo: model.workoutInfo,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-        ),
-        if (threadCreateState.isUploading && threadCreateState.totalCount > 0)
-          _uploadingStatusBar(threadCreateState),
-        if (!threadCreateState.isUploading)
-          Positioned(
-            right: 18,
-            bottom: 10,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  CupertinoPageRoute(
-                    builder: (context) => ThreadCreateScreen(
-                      trainer: ThreadTrainer(
-                        id: trainer.trainer.id,
-                        nickname: trainer.trainer.nickname,
-                        profileImage: trainer.trainer.profileImage,
-                      ),
-                      user: widget.user,
-                    ),
+                        ],
+                      );
+                    },
                   ),
-                );
-              },
-              backgroundColor: Colors.transparent,
-              child: SvgPicture.asset(SVGConstants.threadCreateButton),
+                ),
+          if (threadCreateState.isUploading && threadCreateState.totalCount > 0)
+            _uploadingStatusBar(threadCreateState),
+          if (!threadCreateState.isUploading)
+            Positioned(
+              right: 18,
+              bottom: 10,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => ThreadCreateScreen(
+                        trainer: ThreadTrainer(
+                          id: trainer.trainer.id,
+                          nickname: trainer.trainer.nickname,
+                          profileImage: trainer.trainer.profileImage,
+                        ),
+                        user: widget.user,
+                      ),
+                    ),
+                  );
+                },
+                backgroundColor: Colors.transparent,
+                child: SvgPicture.asset(SVGConstants.threadCreateButton),
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 

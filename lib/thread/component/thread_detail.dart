@@ -448,13 +448,13 @@ class _ThreadDetailState extends ConsumerState<ThreadDetail> {
             emoji: key,
             count: value,
             isSelected: model.emojis!.indexWhere((e) {
-                  return e.emoji == key && e.userId == model.user.id;
+                  return e.emoji == key && e.trainerId == model.trainer.id;
                 }) >
                 -1,
             onTap: () async {
               final result = await ref
                   .read(threadDetailProvider(family).notifier)
-                  .updateThreadEmoji(widget.threadId, model.user.id, key);
+                  .updateThreadEmoji(widget.threadId, model.trainer.id, key);
 
               int index = threadListModel.data.indexWhere(
                 (thread) {
@@ -498,7 +498,7 @@ class _ThreadDetailState extends ConsumerState<ThreadDetail> {
               final result = await ref
                   .read(threadDetailProvider(family).notifier)
                   .updateThreadEmoji(
-                      widget.threadId, model.user.id, emoji.emoji);
+                      widget.threadId, model.trainer.id, emoji.emoji);
 
               int index = threadListModel.data.indexWhere(
                 (thread) {
@@ -511,11 +511,11 @@ class _ThreadDetailState extends ConsumerState<ThreadDetail> {
                   final emojiId = result['emojiId'];
 
                   ref.read(threadProvider(widget.user).notifier).addEmoji(
-                      model.user.id, null, emoji.emoji, index, emojiId);
+                      null, model.trainer.id, emoji.emoji, index, emojiId);
                 } else if (result['type'] == 'remove') {
                   final emojiId = result['emojiId'];
                   ref.read(threadProvider(widget.user).notifier).removeEmoji(
-                      model.user.id, null, emoji.emoji, index, emojiId);
+                      null, model.trainer.id, emoji.emoji, index, emojiId);
                 }
               } catch (e) {
                 debugPrint('$e');

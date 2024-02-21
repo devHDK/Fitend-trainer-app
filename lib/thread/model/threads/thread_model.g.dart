@@ -12,8 +12,8 @@ ThreadModel _$ThreadModelFromJson(Map<String, dynamic> json) => ThreadModel(
       type: json['type'] as String,
       title: json['title'] as String?,
       content: json['content'] as String,
-      checked: json['checked'] as bool,
-      commentChecked: json['commentChecked'] as bool,
+      checked: json['checked'] as bool?,
+      commentChecked: json['commentChecked'] as bool?,
       gallery: (json['gallery'] as List<dynamic>?)
           ?.map((e) => GalleryModel.fromJson(e as Map<String, dynamic>))
           .toList(),

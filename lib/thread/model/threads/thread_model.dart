@@ -33,9 +33,9 @@ class ThreadModel extends ThreadModelBase {
   @JsonKey(name: "content")
   final String content;
   @JsonKey(name: "checked")
-  final bool checked;
+  bool? checked;
   @JsonKey(name: "commentChecked")
-  final bool commentChecked;
+  bool? commentChecked;
   @JsonKey(name: "gallery")
   List<GalleryModel>? gallery;
   @JsonKey(name: "workoutInfo")
@@ -61,8 +61,8 @@ class ThreadModel extends ThreadModelBase {
     required this.type,
     required this.title,
     required this.content,
-    required this.checked,
-    required this.commentChecked,
+    this.checked,
+    this.commentChecked,
     required this.gallery,
     required this.workoutInfo,
     required this.user,

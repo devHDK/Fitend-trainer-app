@@ -22,6 +22,7 @@ final threadProvider = StateNotifierProvider.family<ThreadStateNotifier,
   final dioUpload = ref.watch(dioUploadProvider);
 
   return ThreadStateNotifier(
+    user: user,
     threadRepository: threadRepository,
     commentRepository: commentRepository,
     emojiRepository: emojiRepository,
@@ -30,12 +31,14 @@ final threadProvider = StateNotifierProvider.family<ThreadStateNotifier,
 });
 
 class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
+  final ThreadUser user;
   final ThreadRepository threadRepository;
   final ThreadCommentRepository commentRepository;
   final EmojiRepository emojiRepository;
   final Dio dioUpload;
 
   ThreadStateNotifier({
+    required this.user,
     required this.threadRepository,
     required this.commentRepository,
     required this.emojiRepository,
@@ -51,10 +54,10 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
   }) async {
     try {
       final isLoading = state is ThreadListModelLoading;
-      // final isRefetching = state is ThreadListModelRefetching;
+      final isRefetching = state is ThreadListModelRefetching;
       final isFetchMore = state is ThreadListModelFetchingMore;
 
-      if (isRefetch && (isLoading || isFetchMore)) {
+      if (isRefetching && (isLoading || isFetchMore)) {
         return;
       }
 
@@ -75,7 +78,11 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
       }
 
       final threadResponse = await threadRepository.getThreads(
-          params: ThreadGetListParamsModel(start: startIndex, perPage: 20));
+          params: ThreadGetListParamsModel(
+        userId: user.id,
+        start: startIndex,
+        perPage: 20,
+      ));
 
       if (state is ThreadListModelFetchingMore) {
         final pState = state as ThreadListModel;
@@ -143,7 +150,7 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
   }
 
   Future<Map<dynamic, dynamic>> updateEmoji(
-      int threadId, int userId, String inputEmoji) async {
+      int threadId, int trainerId, String inputEmoji) async {
     try {
       final pstate = state as ThreadListModel;
 
@@ -165,21 +172,21 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
       if (pstate.data[index].emojis != null &&
           pstate.data[index].emojis!.isNotEmpty) {
         final emojiIndex = pstate.data[index].emojis!.indexWhere((emoji) {
-          return emoji.emoji == inputEmoji && emoji.userId == userId;
+          return emoji.emoji == inputEmoji && emoji.trainerId == trainerId;
         });
 
         if (emojiIndex == -1) {
           //이모지 추가
-          addEmoji(userId, null, inputEmoji, index, response.emojiId);
+          addEmoji(null, trainerId, inputEmoji, index, response.emojiId);
           result['type'] = 'add';
         } else {
           //이모지 취소
-          removeEmoji(userId, null, inputEmoji, index, response.emojiId);
+          removeEmoji(null, trainerId, inputEmoji, index, response.emojiId);
           result['type'] = 'remove';
         }
       } else if (pstate.data[index].emojis != null &&
           pstate.data[index].emojis!.isEmpty) {
-        addEmoji(userId, null, inputEmoji, index, response.emojiId);
+        addEmoji(null, trainerId, inputEmoji, index, response.emojiId);
         result['type'] = 'add';
       }
 
