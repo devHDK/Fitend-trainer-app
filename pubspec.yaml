@@ -101,6 +101,9 @@ dependencies:
   emoji_picker_flutter: ^1.6.1
   scrolls_to_top: ^2.1.1
   scrollable_positioned_list: ^0.3.8
+  line_icons: ^2.0.3
+  toggle_switch: ^2.1.0
+  sliding_up_panel: ^2.0.0+1
 
   #launch setting
   flutter_native_splash: ^2.2.19
