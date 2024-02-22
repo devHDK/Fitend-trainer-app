@@ -166,7 +166,7 @@ flavorizr:
   flavors:
     local:
       app:
-        name: "fitend for trainer_local"
+        name: "핏엔드 코치_local"
 
       android:
         applicationId: "com.raid.fitend.trainer.local"
@@ -176,7 +176,7 @@ flavorizr:
 
     development:
       app:
-        name: "fitend for trainer_dev"
+        name: "핏엔드 코치_dev"
 
       android:
         applicationId: "com.raid.fitend.trainer.dev"
@@ -186,7 +186,7 @@ flavorizr:
 
     production:
       app:
-        name: "fitend for trainer"
+        name: "핏엔드 코치"
 
       android:
         applicationId: "com.raid.trainer.fitend"

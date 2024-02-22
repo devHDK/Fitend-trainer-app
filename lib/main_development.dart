@@ -9,7 +9,6 @@ import 'package:fitend_trainer_app/common/utils/data_utils.dart';
 import 'package:fitend_trainer_app/common/utils/shared_pref_utils.dart';
 import 'package:fitend_trainer_app/firebase_options.dart';
 import 'package:fitend_trainer_app/firebase_setup.dart';
-import 'package:fitend_trainer_app/thread/model/emojis/emoji_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_push_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -224,9 +223,14 @@ Future<void> main() async {
   // background 수신처리
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
+  RemoteMessage? initialMessage =
+      await FirebaseMessaging.instance.getInitialMessage();
+
+  print(initialMessage);
+
   runApp(
-    const ProviderScope(
-      child: App(),
+    ProviderScope(
+      child: App(initialMessage: initialMessage),
     ),
   );
 }

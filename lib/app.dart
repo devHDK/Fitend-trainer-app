@@ -1,7 +1,14 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/provider/shared_preference_provider.dart';
 import 'package:fitend_trainer_app/common/secure_storage/secure_storage.dart';
+import 'package:fitend_trainer_app/home/provider/home_screen_provider.dart';
+import 'package:fitend_trainer_app/home_screen.dart';
+import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
+import 'package:fitend_trainer_app/thread/model/threads/thread_push_data.dart';
+import 'package:fitend_trainer_app/thread/view/thread_detail_screen.dart';
+import 'package:fitend_trainer_app/thread/view/thread_screen.dart';
 import 'package:fitend_trainer_app/trainer/provider/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +17,12 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'flavors.dart';
 
 class App extends ConsumerStatefulWidget {
-  const App({super.key});
+  const App({
+    super.key,
+    this.initialMessage,
+  });
+
+  final RemoteMessage? initialMessage;
 
   @override
   ConsumerState<App> createState() => _AppState();
@@ -21,6 +33,16 @@ class _AppState extends ConsumerState<App> {
   void initState() {
     super.initState();
     initSharedPref(); //sharedPreferences 세팅
+    setupFirebaseMessagingHandlersWhenOpen();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Future.delayed(
+        const Duration(seconds: 2),
+        () {
+          setupFirebaseMessagingHandlers(widget.initialMessage);
+        },
+      );
+    });
   }
 
   void initSharedPref() async {
@@ -51,6 +73,76 @@ class _AppState extends ConsumerState<App> {
       pref.setStringList(StringConstants.needEmojiCreate, []),
       pref.setStringList(StringConstants.needEmojiDelete, []),
     ]);
+  }
+
+  void setupFirebaseMessagingHandlers(RemoteMessage? message) {
+    if (message == null) {
+      return;
+    }
+
+    debugPrint("message: ${message.data}");
+
+    if (message.data['type'].toString().contains('meeting')) {
+      ref.read(homeStateProvider.notifier).changeTapIndex(0);
+      ref.read(routerProvider).goNamed(HomeScreen.routeName);
+    } else {
+      final pushData = ThreadPushData.fromJson(message.data);
+
+      final user = ThreadUser(
+        id: int.parse(pushData.userId!),
+        nickname: pushData.nickname!,
+        gender: pushData.gender!,
+      );
+
+      ref.read(homeStateProvider.notifier).changeTapIndex(1);
+
+      if (pushData.threadId == null) {
+        ref.read(routerProvider).goNamed(
+              ThreadScreen.routeName,
+              extra: user,
+            );
+      } else {
+        ref.read(routerProvider).goNamed(
+              ThreadDetailScreen.routeName,
+              pathParameters: {'threadId': pushData.threadId!},
+              extra: user,
+            );
+      }
+    }
+  }
+
+  void setupFirebaseMessagingHandlersWhenOpen() {
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage message) async {
+        debugPrint("message: ${message.data}");
+
+        if (message.data['type'].toString().contains('meeting')) {
+          ref.read(homeStateProvider.notifier).changeTapIndex(0);
+          ref.read(routerProvider).goNamed(HomeScreen.routeName);
+        } else {
+          final pushData = ThreadPushData.fromJson(message.data);
+          final user = ThreadUser(
+              id: int.parse(pushData.userId!),
+              nickname: pushData.nickname!,
+              gender: pushData.gender!);
+
+          ref.read(homeStateProvider.notifier).changeTapIndex(1);
+
+          if (pushData.threadId == null) {
+            ref.read(routerProvider).goNamed(
+                  ThreadScreen.routeName,
+                  extra: user,
+                );
+          } else {
+            ref.read(routerProvider).goNamed(
+                  ThreadDetailScreen.routeName,
+                  pathParameters: {'threadId': pushData.threadId!},
+                  extra: user,
+                );
+          }
+        }
+      },
+    );
   }
 
   @override

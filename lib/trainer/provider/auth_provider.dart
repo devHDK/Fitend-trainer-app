@@ -1,6 +1,9 @@
 import 'package:fitend_trainer_app/common/view/error_screen.dart';
 import 'package:fitend_trainer_app/common/view/onboarding_screen.dart';
 import 'package:fitend_trainer_app/home_screen.dart';
+import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
+import 'package:fitend_trainer_app/thread/view/thread_detail_screen.dart';
+import 'package:fitend_trainer_app/thread/view/thread_screen.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
 import 'package:fitend_trainer_app/trainer/view/login_screen.dart';
@@ -42,6 +45,26 @@ class AuthProvider extends ChangeNotifier {
           path: '/',
           name: HomeScreen.routeName,
           builder: (context, state) => const HomeScreen(),
+          routes: [
+            GoRoute(
+              path: 'thread',
+              name: ThreadScreen.routeName,
+              builder: (context, state) => ThreadScreen(
+                user: state.extra as ThreadUser,
+                titleContent: '',
+              ),
+              routes: [
+                GoRoute(
+                  path: 'threadDetail/:threadId',
+                  name: ThreadDetailScreen.routeName,
+                  builder: (context, state) => ThreadDetailScreen(
+                    threadId: int.parse(state.pathParameters['threadId']!),
+                    user: state.extra as ThreadUser,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
         GoRoute(
           path: '/error',

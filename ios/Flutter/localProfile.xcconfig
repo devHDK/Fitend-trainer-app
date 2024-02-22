@@ -2,5 +2,5 @@
 
 FLUTTER_TARGET=lib/main_local.dart
 ASSET_PREFIX=local
-BUNDLE_NAME=fitend for trainer_local
-BUNDLE_DISPLAY_NAME=fitend for trainer_local
+BUNDLE_NAME=핏엔드 코치_local
+BUNDLE_DISPLAY_NAME=핏엔드 코치_local

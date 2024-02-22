@@ -31,17 +31,17 @@ android {
         local {
             dimension "flavor-type"
             applicationId "com.raid.fitend.trainer.local"
-            resValue "string", "app_name", "fitend for trainer_local"
+            resValue "string", "app_name", "핏엔드 코치_local"
         }
         development {
             dimension "flavor-type"
             applicationId "com.raid.fitend.trainer.dev"
-            resValue "string", "app_name", "fitend tor trainer_dev"
+            resValue "string", "app_name", "핏엔드 코치_dev"
         }
         production {
             dimension "flavor-type"
             applicationId "com.raid.trainer.fitend"
-            resValue "string", "app_name", "fitend for trainer"
+            resValue "string", "app_name", "핏엔드 코치"
         }
     }
 

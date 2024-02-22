@@ -148,7 +148,7 @@ class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen> {
                           }
                         }
 
-                        return GestureDetector(
+                        return InkWell(
                           onTap: () {
                             ref
                                 .read(threadUserListProvider.notifier)
