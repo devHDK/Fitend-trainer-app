@@ -23,6 +23,7 @@ import 'package:fitend_trainer_app/thread/model/threads/thread_model.dart';
 import 'package:fitend_trainer_app/thread/provider/comment_create_provider.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_detail_provider.dart';
 import 'package:fitend_trainer_app/thread/utils/media_utils.dart';
+import 'package:fitend_trainer_app/thread/utils/thread_push_update_utils.dart';
 import 'package:fitend_trainer_app/thread/view/comment_asset_edit_screen.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
@@ -75,9 +76,7 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
         ThreadFamilyModel(threadId: widget.threadId, user: widget.user);
 
     if (mounted && ref.read(threadDetailProvider(family)) is ThreadModelError) {
-      await ref.read(threadDetailProvider(family).notifier).getThreadDetail(
-            family: family,
-          );
+      await ref.read(threadDetailProvider(family).notifier).getThreadDetail();
     }
   }
 
@@ -108,7 +107,7 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        // await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+        await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
         break;
       case AppLifecycleState.inactive:
         break;
@@ -123,13 +122,13 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
 
   @override
   void didPush() async {
-    // await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+    await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
     super.didPush();
   }
 
   @override
   void didPop() async {
-    // await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+    await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
     super.didPop();
   }
 
@@ -199,9 +198,7 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
             onRefresh: () async {
               await ref
                   .read(threadDetailProvider(family).notifier)
-                  .getThreadDetail(
-                    family: family,
-                  );
+                  .getThreadDetail();
             },
             child: CustomScrollView(
               slivers: [

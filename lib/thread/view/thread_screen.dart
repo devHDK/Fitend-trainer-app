@@ -12,6 +12,7 @@ import 'package:fitend_trainer_app/thread/model/threads/thread_create_model.dart
 import 'package:fitend_trainer_app/thread/model/threads/thread_list_model.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_create_provider.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_provider.dart';
+import 'package:fitend_trainer_app/thread/utils/thread_push_update_utils.dart';
 import 'package:fitend_trainer_app/thread/view/thread_create_screen.dart';
 import 'package:fitend_trainer_app/thread/view/thread_detail_screen.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
@@ -146,7 +147,7 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
     switch (state) {
       case AppLifecycleState.resumed:
         if (mounted) {
-          // await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+          await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
         }
         break;
       case AppLifecycleState.inactive:
@@ -163,7 +164,7 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
   @override
   void didPush() async {
     if (mounted) {
-      // await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+      await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
     }
     super.didPush();
   }
@@ -171,7 +172,7 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
   @override
   void didPop() async {
     if (mounted) {
-      // await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+      await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
     }
     super.didPop();
   }

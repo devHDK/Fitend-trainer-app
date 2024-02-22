@@ -45,11 +45,10 @@ class StringConstants {
   static String hasNewNotification = 'hasNewNotification';
 
   static String needScheduleUpdate = 'scheduleUpdate';
-  static String needWorkoutUpdateList = 'needWorkoutUpdateList';
 
   static String threadBadgeCount = 'threadBadgeCount';
 
-  static String needThreadUpdate = 'needThreadUpdate';
+  static String needThreadUpdateUserList = 'needThreadUpdateUserList';
   static String needThreadUpdateList = 'needThreadUpdateList';
   static String needThreadDelete = 'needThreadDelete';
 

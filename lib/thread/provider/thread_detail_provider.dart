@@ -55,10 +55,10 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
     required this.emojiRepository,
     required this.dioUpload,
   }) : super(ThreadModelLoading()) {
-    getThreadDetail(family: family);
+    getThreadDetail();
   }
 
-  Future<void> getThreadDetail({required ThreadFamilyModel family}) async {
+  Future<void> getThreadDetail() async {
     try {
       try {
         var thread =
