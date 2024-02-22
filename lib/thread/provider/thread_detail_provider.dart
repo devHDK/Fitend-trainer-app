@@ -9,6 +9,7 @@ import 'package:fitend_trainer_app/thread/model/emojis/emoji_model.dart';
 import 'package:fitend_trainer_app/thread/model/emojis/emoji_params_model.dart';
 import 'package:fitend_trainer_app/thread/model/exception/exceptios.dart';
 import 'package:fitend_trainer_app/thread/model/thread_family_model.dart';
+import 'package:fitend_trainer_app/thread/model/threads/thread_check_body.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_create_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_list_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_model.dart';
@@ -315,5 +316,24 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
     } catch (e) {
       debugPrint('$e');
     }
+  }
+
+  void updateChecked({required int threadId}) {
+    try {
+      final pstate = state as ThreadModel;
+
+      threadRepository.putThreadCheckWithId(
+        id: threadId,
+        body: ThreadCheckBody(
+          checked: true,
+          commentChecked: true,
+        ),
+      );
+
+      pstate.checked = true;
+      pstate.commentChecked = true;
+
+      state = pstate.copyWith();
+    } catch (e) {}
   }
 }

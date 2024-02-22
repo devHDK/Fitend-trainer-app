@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:fitend_trainer_app/common/dio/dio.dart';
 import 'package:fitend_trainer_app/thread/model/common/create_resp_model.dart';
+import 'package:fitend_trainer_app/thread/model/threads/thread_check_body.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_create_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_get_list_params_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_list_model.dart';
@@ -69,6 +70,7 @@ abstract class ThreadRepository {
   })
   Future<void> putThreadCheckWithId({
     @Path('id') required int id,
+    @Body() required ThreadCheckBody body,
   });
 
   @DELETE('/threads/{id}')

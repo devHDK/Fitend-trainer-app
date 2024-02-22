@@ -33,4 +33,13 @@ class ThreadUserStateNotifier extends StateNotifier<ThreadUserListModelBase?> {
       state = ThreadUserListModelError(message: e.toString());
     }
   }
+
+  void updateIsChecked(int id) {
+    final pstate = state as ThreadUserListModel;
+
+    final index = pstate.data.indexWhere((user) => user.id == id);
+    pstate.data[index].isChecked = true;
+
+    state = pstate.copyWith();
+  }
 }

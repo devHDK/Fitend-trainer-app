@@ -111,117 +111,134 @@ class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen> {
                   height: 25,
                 ),
                 Expanded(
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(
-                      height: 25,
-                    ),
-                    controller: _scrollController,
-                    itemBuilder: (context, index) {
-                      final model = filteredModel[index];
+                  child: RefreshIndicator(
+                    backgroundColor: Pallete.background,
+                    color: Pallete.point,
+                    semanticsLabel: '새로고침',
+                    onRefresh: () async {
+                      await ref
+                          .read(threadUserListProvider.notifier)
+                          .getThreadUsers();
+                    },
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 25,
+                      ),
+                      controller: _scrollController,
+                      itemBuilder: (context, index) {
+                        final model = filteredModel[index];
 
-                      String ticketType = '';
+                        String ticketType = '';
 
-                      if (model.availableTickets == null ||
-                          model.availableTickets!.isEmpty) {
-                        ticketType = '이용중인 상품 없음';
-                      } else {
-                        final ticket = model.availableTickets!.first;
-                        final remainDate =
-                            ticket.expiredAt.difference(DateTime.now());
-
-                        if (ticket.type == 'personal') {
-                          ticketType = 'PT ∙ ${remainDate.inDays}일 남음';
-                        } else if (ticket.month == 0) {
-                          ticketType = '무료체험 ∙ ${remainDate.inDays}일 남음';
+                        if (model.availableTickets == null ||
+                            model.availableTickets!.isEmpty) {
+                          ticketType = '이용중인 상품 없음';
                         } else {
-                          ticketType =
-                              '${ticket.month}개월권 ∙ ${remainDate.inDays}일 남음';
-                        }
-                      }
+                          final ticket = model.availableTickets!.first;
+                          final remainDate =
+                              ticket.expiredAt.difference(DateTime.now());
 
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (context) => ThreadScreen(
-                                user: ThreadUser(
+                          if (ticket.type == 'personal') {
+                            ticketType = 'PT ∙ ${remainDate.inDays}일 남음';
+                          } else if (ticket.month == 0) {
+                            ticketType = '무료체험 ∙ ${remainDate.inDays}일 남음';
+                          } else {
+                            ticketType =
+                                '${ticket.month}개월권 ∙ ${remainDate.inDays}일 남음';
+                          }
+                        }
+
+                        return GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(threadUserListProvider.notifier)
+                                .updateIsChecked(model.id);
+
+                            Navigator.of(context).push(
+                              CupertinoPageRoute(
+                                builder: (context) => ThreadScreen(
+                                  user: ThreadUser(
                                     id: model.id,
                                     nickname: model.nickname,
-                                    gender: model.gender),
-                                titleContent: ticketType,
-                              ),
-                            ),
-                          );
-                        },
-                        child: SizedBox(
-                          height: 50,
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(24),
-                                child: CustomNetworkImage(
-                                  imageUrl: model.gender == 'male'
-                                      ? URLConstants.maleProfileUrl
-                                      : URLConstants.femaleProfileUrl,
-                                  width: 48,
-                                  height: 48,
-                                  boxFit: BoxFit.cover,
+                                    gender: model.gender,
+                                  ),
+                                  titleContent: ticketType,
                                 ),
                               ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    model.nickname,
-                                    style: h4Headline.copyWith(
-                                      color: Colors.white,
-                                    ),
+                            );
+                          },
+                          child: SizedBox(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(24),
+                                  child: CustomNetworkImage(
+                                    imageUrl: model.gender == 'male'
+                                        ? URLConstants.maleProfileUrl
+                                        : URLConstants.femaleProfileUrl,
+                                    width: 48,
+                                    height: 48,
+                                    boxFit: BoxFit.cover,
                                   ),
-                                  Text(
-                                    ticketType,
-                                    style: s2SubTitle.copyWith(
-                                      color: Pallete.lightGray,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Stack(
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      if (model.updatedAt != null)
-                                        Text(
-                                          DataUtils.getElapsedTimeStringFromNow(
-                                              model.updatedAt!),
-                                          style: c1Caption.copyWith(
-                                            color: Pallete.gray,
-                                          ),
-                                        ),
-                                      const SizedBox(
-                                        height: 10,
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      model.nickname,
+                                      style: h4Headline.copyWith(
+                                        color: Colors.white,
                                       ),
-                                    ],
-                                  ),
-                                  if (!model.isChecked)
-                                    Positioned(
-                                      right: 1,
-                                      bottom: 10,
-                                      child:
-                                          SvgPicture.asset(SVGConstants.redDot),
                                     ),
-                                ],
-                              )
-                            ],
+                                    Text(
+                                      ticketType,
+                                      style: s2SubTitle.copyWith(
+                                        color: Pallete.lightGray,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                Stack(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        if (model.updatedAt != null)
+                                          Text(
+                                            DataUtils
+                                                .getElapsedTimeStringFromNow(
+                                                    model.updatedAt!),
+                                            style: c1Caption.copyWith(
+                                              color: Pallete.gray,
+                                            ),
+                                          ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                      ],
+                                    ),
+                                    if (!model.isChecked)
+                                      Positioned(
+                                        right: 1,
+                                        bottom: 10,
+                                        child: SvgPicture.asset(
+                                            SVGConstants.redDot),
+                                      ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    itemCount: filteredModel.length,
+                        );
+                      },
+                      itemCount: filteredModel.length,
+                    ),
                   ),
                 )
               ],

@@ -62,7 +62,6 @@ class ScheduleStateNotifier extends StateNotifier<WorkoutResultModelBase> {
 
       state = ret.copyWith(workoutSchedules: tempScheduleList);
     } catch (e) {
-      print(e);
       state = WorkoutResultModelError(message: '데이터를 불러올수 없습니다.');
     }
   }

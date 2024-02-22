@@ -37,6 +37,7 @@ import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class ThreadDetailScreen extends ConsumerStatefulWidget {
   static String get routeName => 'threadDetail';
@@ -68,14 +69,17 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
 
     WidgetsBinding.instance.addObserver(this);
     commentFocusNode.addListener(_commentFocusnodeListner);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      fetch();
+    });
   }
 
   void fetch() async {
     final family =
         ThreadFamilyModel(threadId: widget.threadId, user: widget.user);
+    final state = ref.read(threadDetailProvider(family));
 
-    if (mounted && ref.read(threadDetailProvider(family)) is ThreadModelError) {
+    if (mounted && state is ThreadModelError) {
       await ref.read(threadDetailProvider(family).notifier).getThreadDetail();
     }
   }

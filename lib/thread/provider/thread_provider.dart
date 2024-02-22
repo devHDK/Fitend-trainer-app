@@ -4,6 +4,7 @@ import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
 import 'package:fitend_trainer_app/thread/model/emojis/emoji_model.dart';
 import 'package:fitend_trainer_app/thread/model/emojis/emoji_params_model.dart';
 import 'package:fitend_trainer_app/thread/model/thread_family_model.dart';
+import 'package:fitend_trainer_app/thread/model/threads/thread_check_body.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_create_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_get_list_params_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_list_model.dart';
@@ -262,5 +263,39 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
     pstate.scrollIndex = scrollIndex;
 
     state = pstate;
+  }
+
+  void updateChecked({required int threadId}) {
+    try {
+      final pstate = state as ThreadListModel;
+
+      final threadIndex =
+          pstate.data.indexWhere((thread) => thread.id == threadId);
+      pstate.data[threadIndex].checked = true;
+
+      state = pstate.copyWith();
+
+      threadRepository.putThreadCheckWithId(
+          id: threadId,
+          body: ThreadCheckBody(
+            checked: true,
+          ));
+    } catch (e) {
+      debugPrint('$e');
+    }
+  }
+
+  void updateCheckedComment({required int threadId}) {
+    try {
+      final pstate = state as ThreadListModel;
+
+      final threadIndex =
+          pstate.data.indexWhere((thread) => thread.id == threadId);
+      pstate.data[threadIndex].commentChecked = true;
+
+      state = pstate.copyWith();
+    } catch (e) {
+      debugPrint('$e');
+    }
   }
 }

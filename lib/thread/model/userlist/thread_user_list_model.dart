@@ -52,7 +52,7 @@ class ThreadUserModel {
   )
   DateTime? updatedAt;
   @JsonKey(name: "isChecked")
-  final bool isChecked;
+  bool isChecked;
 
   ThreadUserModel({
     required this.id,
