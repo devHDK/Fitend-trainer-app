@@ -264,26 +264,29 @@ class ThreadCreateStateNotifier extends StateNotifier<ThreadCreateTempModel> {
 
       final response = await threadRepository.postThread(model: model);
 
-      threadListState.addThread(
-        ThreadModel(
-          id: response.id,
-          writerType: 'trainer',
-          type: 'general',
-          title: model.title,
-          content: model.content,
-          gallery: model.gallery,
-          workoutInfo: null,
-          user: user,
-          trainer: trainer,
-          emojis: [],
-          createdAt: DateTime.now().toUtc().toIso8601String(),
-          userCommentCount: 0,
-          trainerCommentCount: 0,
-          comments: [],
-          checked: true,
-          commentChecked: true,
-        ),
-      );
+      try {
+        threadListState.addThread(
+          ThreadModel(
+            id: response.id,
+            writerType: 'trainer',
+            type: 'general',
+            title: model.title,
+            content: model.content,
+            gallery: model.gallery,
+            workoutInfo: null,
+            user: user,
+            trainer: trainer,
+            emojis: [],
+            createdAt: DateTime.now().toUtc().toIso8601String(),
+            userCommentCount: 0,
+            trainerCommentCount: 0,
+            comments: [],
+            checked: true,
+            commentChecked: true,
+          ),
+        );
+      } catch (e) {}
+
       init();
       if (state.assetsPaths!.isNotEmpty) {
         DialogWidgets.showToast(content: '업로드가 완료되었습니다!');

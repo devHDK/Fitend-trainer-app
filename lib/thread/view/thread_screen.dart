@@ -357,17 +357,26 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
                               ),
                             GestureDetector(
                               onTap: () {
+                                if (!mounted) return;
+
                                 final family = ThreadFamilyModel(
                                     threadId: model.id, user: widget.user);
 
                                 //읽음 처리
-                                ref
-                                    .read(threadDetailProvider(family).notifier)
-                                    .updateChecked(threadId: model.id);
+                                if ((model.checked != null &&
+                                        !model.checked!) ||
+                                    (model.commentChecked != null &&
+                                        !model.commentChecked!)) {
+                                  ref
+                                      .read(
+                                          threadDetailProvider(family).notifier)
+                                      .updateChecked(threadId: model.id);
 
-                                ref
-                                    .read(threadProvider(widget.user).notifier)
-                                    .updateCheckedComment(threadId: model.id);
+                                  ref
+                                      .read(
+                                          threadProvider(widget.user).notifier)
+                                      .updateCheckedState(threadId: model.id);
+                                }
 
                                 Navigator.of(context).push(CupertinoPageRoute(
                                   builder: (context) => ThreadDetailScreen(

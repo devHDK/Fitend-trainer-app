@@ -226,8 +226,6 @@ Future<void> main() async {
   RemoteMessage? initialMessage =
       await FirebaseMessaging.instance.getInitialMessage();
 
-  print(initialMessage);
-
   runApp(
     ProviderScope(
       child: App(initialMessage: initialMessage),

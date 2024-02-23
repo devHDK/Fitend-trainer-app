@@ -5,6 +5,7 @@ import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/common/utils/shared_pref_utils.dart';
 import 'package:fitend_trainer_app/home/provider/home_screen_provider.dart';
 import 'package:fitend_trainer_app/notifications/component/notification_cell.dart';
+import 'package:fitend_trainer_app/notifications/model/notificatiion_main_state_model.dart';
 import 'package:fitend_trainer_app/notifications/model/notification_model.dart';
 import 'package:fitend_trainer_app/notifications/provider/notification_home_screen_provider.dart';
 import 'package:fitend_trainer_app/notifications/provider/notification_provider.dart';
@@ -17,8 +18,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationScreen extends ConsumerStatefulWidget {
@@ -61,16 +60,24 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
   @override
   void didPush() async {
     putNotification();
-
-    await ref.read(notificationProvider.notifier).putNotification();
     await FlutterAppBadger.removeBadge();
+
+    final notiState = ref.read(notificationHomeProvider);
+
+    if (mounted &&
+        notiState is NotificationMainModel &&
+        !notiState.isConfirmed) {
+      ref.read(notificationRepositoryProvider).putNotificationsConfirm();
+    }
     super.didPush();
   }
 
   @override
   void didPop() async {
-    await ref.read(notificationProvider.notifier).putNotification();
-    ref.read(notificationHomeProvider.notifier).updateIsConfirm(true);
+    if (mounted) {
+      ref.read(notificationProvider.notifier).putNotification();
+      ref.read(notificationHomeProvider.notifier).updateIsConfirm(true);
+    }
     super.didPop();
   }
 
@@ -79,7 +86,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
     final isNeedUpdateNoti = SharedPrefUtils.getIsNeedUpdate(
         StringConstants.needNotificationUpdate, pref);
 
-    if (isNeedUpdateNoti) {
+    if (mounted && isNeedUpdateNoti) {
       await ref.read(notificationProvider.notifier).paginate();
       await SharedPrefUtils.updateIsNeedUpdate(
           StringConstants.needNotificationUpdate, pref, false);
@@ -105,7 +112,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
 
   @override
   void dispose() async {
-    ref.read(routeObserverProvider).unsubscribe(this);
+    // ref.read(routeObserverProvider).unsubscribe(this);
     WidgetsBinding.instance.removeObserver(this);
     controller.removeListener(listener);
     super.dispose();
@@ -120,8 +127,10 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
           notification.data!.length < notification.total) {
         //스크롤을 아래로 내렸을때
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-          await provider.paginate(
-              start: notification.data!.length, fetchMore: true);
+          if (mounted) {
+            await provider.paginate(
+                start: notification.data!.length, fetchMore: true);
+          }
         });
       }
     }
@@ -145,7 +154,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
           message: state.message,
           confirmText: '확인',
           confirmOnTap: () {
-            ref.read(notificationProvider.notifier).paginate(start: 0);
+            if (mounted) {
+              ref.read(notificationProvider.notifier).paginate(start: 0);
+            }
           },
         ),
       );
@@ -167,7 +178,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
             color: Pallete.point,
             semanticsLabel: '새로고침',
             onRefresh: () async {
-              await ref.read(notificationProvider.notifier).paginate();
+              if (mounted) {
+                await ref.read(notificationProvider.notifier).paginate();
+              }
             },
             child: ListView.builder(
               controller: controller,

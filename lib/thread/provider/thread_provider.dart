@@ -279,19 +279,21 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
           id: threadId,
           body: ThreadCheckBody(
             checked: true,
+            commentChecked: true,
           ));
     } catch (e) {
       debugPrint('$e');
     }
   }
 
-  void updateCheckedComment({required int threadId}) {
+  void updateCheckedState({required int threadId}) {
     try {
       final pstate = state as ThreadListModel;
 
       final threadIndex =
           pstate.data.indexWhere((thread) => thread.id == threadId);
       pstate.data[threadIndex].commentChecked = true;
+      pstate.data[threadIndex].checked = true;
 
       state = pstate.copyWith();
     } catch (e) {
