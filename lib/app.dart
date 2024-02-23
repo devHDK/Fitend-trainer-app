@@ -79,7 +79,7 @@ class _AppState extends ConsumerState<App> {
     if (message == null) {
       return;
     }
-
+    debugPrint("push open App!!");
     debugPrint("message: ${message.data}");
 
     if (message.data['type'].toString().contains('meeting')) {
@@ -114,6 +114,7 @@ class _AppState extends ConsumerState<App> {
   void setupFirebaseMessagingHandlersWhenOpen() {
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) async {
+        debugPrint("push open App - onMessageOpenedApp ");
         debugPrint("message: ${message.data}");
 
         if (message.data['type'].toString().contains('meeting')) {

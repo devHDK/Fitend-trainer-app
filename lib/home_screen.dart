@@ -128,7 +128,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               : model.tabIndex == 1
                   ? ThreadUserListScreen(key: threadScreenKey)
                   : model.tabIndex == 2
-                      ? const NotificationScreen()
+                      // ignore: prefer_const_constructors
+                      ? NotificationScreen()
                       : const MyPageScreen(),
         ),
       ),

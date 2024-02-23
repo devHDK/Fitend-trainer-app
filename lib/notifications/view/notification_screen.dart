@@ -5,9 +5,7 @@ import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/common/utils/shared_pref_utils.dart';
 import 'package:fitend_trainer_app/home/provider/home_screen_provider.dart';
 import 'package:fitend_trainer_app/notifications/component/notification_cell.dart';
-import 'package:fitend_trainer_app/notifications/model/notificatiion_main_state_model.dart';
 import 'package:fitend_trainer_app/notifications/model/notification_model.dart';
-import 'package:fitend_trainer_app/notifications/provider/notification_home_screen_provider.dart';
 import 'package:fitend_trainer_app/notifications/provider/notification_provider.dart';
 import 'package:fitend_trainer_app/notifications/repository/notifications_repository.dart';
 import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
@@ -61,24 +59,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
   void didPush() async {
     putNotification();
     await FlutterAppBadger.removeBadge();
+    ref.read(notificationRepositoryProvider).putNotificationsConfirm();
 
-    final notiState = ref.read(notificationHomeProvider);
-
-    if (mounted &&
-        notiState is NotificationMainModel &&
-        !notiState.isConfirmed) {
-      ref.read(notificationRepositoryProvider).putNotificationsConfirm();
-    }
     super.didPush();
-  }
-
-  @override
-  void didPop() async {
-    if (mounted) {
-      ref.read(notificationProvider.notifier).putNotification();
-      ref.read(notificationHomeProvider.notifier).updateIsConfirm(true);
-    }
-    super.didPop();
   }
 
   Future<void> putNotification() async {
@@ -112,9 +95,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
 
   @override
   void dispose() async {
-    // ref.read(routeObserverProvider).unsubscribe(this);
+    // controller.removeListener(listener);
     WidgetsBinding.instance.removeObserver(this);
-    controller.removeListener(listener);
+
     super.dispose();
   }
 
