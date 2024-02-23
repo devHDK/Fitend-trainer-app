@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/utils/shared_pref_utils.dart';
+import 'package:fitend_trainer_app/notifications/provider/notification_home_screen_provider.dart';
 import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
 import 'package:fitend_trainer_app/thread/model/thread_family_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_list_model.dart';
@@ -16,6 +17,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThreadUpdateUtils {
   static Future<void> checkThreadNeedUpdate(WidgetRef ref) async {
     final pref = await SharedPreferences.getInstance();
+
+    var isNeedUpdateNoti = SharedPrefUtils.getIsNeedUpdate(
+        StringConstants.needNotificationUpdate, pref);
+
     var threadUpdateUserList = SharedPrefUtils.getNeedUpdateList(
         StringConstants.needThreadUpdateUserList, pref);
     var threadUpdateList = SharedPrefUtils.getNeedUpdateList(
@@ -33,6 +38,11 @@ class ThreadUpdateUtils {
 
     List<String> userRefreshList = [];
     List<String> detailRefreshedList = [];
+
+    if (isNeedUpdateNoti) {
+      print('ThreadUpdateUtils - isNeedUpdateNoti ');
+      ref.read(notificationHomeProvider.notifier).updateIsConfirm(false);
+    }
 
     if (threadUpdateUserList.isNotEmpty) {
       for (var pushData in threadUpdateUserList) {
@@ -56,7 +66,7 @@ class ThreadUpdateUtils {
       }
 
       // ref.read(notificationHomeProvider.notifier).addBageCount(1);
-      // ref.read(notificationHomeProvider.notifier).updateIsConfirm(false);
+      ref.read(notificationHomeProvider.notifier).updateIsConfirm(false);
 
       await SharedPrefUtils.updateNeedUpdateList(
           StringConstants.needThreadUpdateUserList, pref, []);
@@ -158,7 +168,7 @@ class ThreadUpdateUtils {
         }
 
         // ref.read(notificationHomeProvider.notifier).addBageCount(1);
-        // ref.read(notificationHomeProvider.notifier).updateIsConfirm(false);
+        ref.read(notificationHomeProvider.notifier).updateIsConfirm(false);
 
         var tempState = ref.read(threadProvider(user));
         var model = tempState as ThreadListModel;

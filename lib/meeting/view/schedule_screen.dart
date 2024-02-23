@@ -1,12 +1,15 @@
 import 'package:fitend_trainer_app/common/component/dialog_widgets.dart';
+import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/common/utils/data_utils.dart';
+import 'package:fitend_trainer_app/common/utils/shared_pref_utils.dart';
 import 'package:fitend_trainer_app/meeting/compoenet/empty_schedule_card.dart';
 import 'package:fitend_trainer_app/meeting/compoenet/meeting_schedule_card.dart';
 import 'package:fitend_trainer_app/meeting/model/meeting_schedule_model.dart';
 import 'package:fitend_trainer_app/meeting/model/schedule_model.dart';
 import 'package:fitend_trainer_app/meeting/provider/schedule_provider.dart';
+import 'package:fitend_trainer_app/thread/utils/thread_push_update_utils.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
 import 'package:fitend_trainer_app/trainer/provider/go_router.dart';
@@ -137,7 +140,8 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        // await _checkIsNeedUpdate();
+        await _checkIsNeedUpdate();
+        await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
 
         break;
       case AppLifecycleState.inactive:
@@ -153,24 +157,25 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen>
 
   @override
   void didPush() async {
-    // await _checkIsNeedUpdate();
+    await _checkIsNeedUpdate();
+    await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
 
     super.didPush();
   }
 
-  // Future<void> _checkIsNeedUpdate() async {
-  //   if (mounted) {
-  //     final pref = await SharedPreferences.getInstance();
-  //     final isNeedUpdate = SharedPrefUtils.getIsNeedUpdate(
-  //         StringConstants.needScheduleUpdate, pref);
+  Future<void> _checkIsNeedUpdate() async {
+    if (mounted) {
+      final pref = await SharedPreferences.getInstance();
+      final isNeedUpdate = SharedPrefUtils.getIsNeedUpdate(
+          StringConstants.needScheduleUpdate, pref);
 
-  //     if (isNeedUpdate) {
-  //       await _resetScheduleList();
-  //       await SharedPrefUtils.updateIsNeedUpdate(
-  //           StringConstants.needScheduleUpdate, pref, false);
-  //     }
-  //   }
-  // }
+      if (isNeedUpdate) {
+        await _resetScheduleList();
+        await SharedPrefUtils.updateIsNeedUpdate(
+            StringConstants.needScheduleUpdate, pref, false);
+      }
+    }
+  }
 
   @override
   void didChangeDependencies() {

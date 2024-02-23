@@ -7,6 +7,8 @@ import 'package:fitend_trainer_app/common/provider/avail_camera_provider.dart';
 import 'package:fitend_trainer_app/home/model/home_screen_state_model.dart';
 import 'package:fitend_trainer_app/home/provider/home_screen_provider.dart';
 import 'package:fitend_trainer_app/meeting/view/schedule_screen.dart';
+import 'package:fitend_trainer_app/notifications/model/notificatiion_main_state_model.dart';
+import 'package:fitend_trainer_app/notifications/provider/notification_home_screen_provider.dart';
 import 'package:fitend_trainer_app/notifications/view/notification_screen.dart';
 import 'package:fitend_trainer_app/thread/view/thread_user_list_screen.dart';
 import 'package:fitend_trainer_app/trainer/view/mypage_screen.dart';
@@ -57,8 +59,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     // AsyncValue<List<CameraDescription>> camerasAsyncValue =
     ref.watch(availableCamerasProvider);
-
     final model = ref.watch(homeStateProvider);
+    final notificationState = ref.watch(notificationHomeProvider);
+
+    if (notificationState is NotificationMainModelLoading) {
+      return const Scaffold(
+        backgroundColor: Pallete.background,
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Pallete.point,
+          ),
+        ),
+      );
+    }
+
+    final notificationHomeModel = notificationState as NotificationMainModel;
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -96,6 +111,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         index: index,
                         activeIcon: activeIcons[index],
                         unActiveIcon: unactiveIcons[index],
+                        notificationHomeModel: notificationHomeModel,
                       ),
                     )
                   ],
@@ -132,11 +148,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     required int index,
     required String activeIcon,
     required String unActiveIcon,
+    required NotificationMainModel notificationHomeModel,
   }) {
     return InkWell(
       onTap: () {
         if (mounted) {
           ref.read(homeStateProvider.notifier).changeTapIndex(index);
+
+          if (index == 2) {
+            ref.read(notificationHomeProvider.notifier).updateIsConfirm(true);
+          }
         }
       },
       child: Padding(
@@ -144,10 +165,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           horizontal: 30,
           vertical: 10,
         ),
-        child: SvgPicture.asset(
-          model.tabIndex == index ? activeIcon : unActiveIcon,
-          width: 24,
-          height: 24,
+        child: Stack(
+          children: [
+            SvgPicture.asset(
+              model.tabIndex == index ? activeIcon : unActiveIcon,
+              width: 24,
+              height: 24,
+            ),
+            if (index == 2 && !notificationHomeModel.isConfirmed)
+              SvgPicture.asset(SVGConstants.redDot)
+          ],
         ),
       ),
     );

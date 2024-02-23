@@ -62,7 +62,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
   void didPush() async {
     putNotification();
 
-    await ref.read(notificationRepositoryProvider).putNotificationsConfirm();
+    await ref.read(notificationProvider.notifier).putNotification();
     await FlutterAppBadger.removeBadge();
     super.didPush();
   }
@@ -105,7 +105,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
 
   @override
   void dispose() async {
-    // ref.read(routeObserverProvider).unsubscribe(this);
+    ref.read(routeObserverProvider).unsubscribe(this);
     WidgetsBinding.instance.removeObserver(this);
     controller.removeListener(listener);
     super.dispose();
