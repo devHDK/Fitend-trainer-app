@@ -221,6 +221,7 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
           confirmOnTap: () {
             ref.invalidate(threadProvider);
           },
+          dismissable: false,
         ),
       );
     }

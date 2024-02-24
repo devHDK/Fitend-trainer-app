@@ -39,6 +39,10 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
 
     controller.addListener(listener);
     WidgetsBinding.instance.addObserver(this);
+
+    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
+      fetch();
+    });
   }
 
   void fetch() async {
@@ -135,12 +139,13 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
       return Center(
         child: DialogWidgets.oneButtonDialog(
           message: state.message,
-          confirmText: '확인',
+          confirmText: '새로 고침',
           confirmOnTap: () {
             if (mounted) {
               ref.read(notificationProvider.notifier).paginate(start: 0);
             }
           },
+          dismissable: false,
         ),
       );
     }
@@ -159,7 +164,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
         : RefreshIndicator(
             backgroundColor: Pallete.background,
             color: Pallete.point,
-            semanticsLabel: '새로고침',
+            semanticsLabel: '새로 고침',
             onRefresh: () async {
               if (mounted) {
                 await ref.read(notificationProvider.notifier).paginate();

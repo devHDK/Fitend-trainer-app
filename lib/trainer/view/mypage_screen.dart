@@ -6,6 +6,7 @@ import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/common/utils/data_utils.dart';
+import 'package:fitend_trainer_app/home/provider/home_screen_provider.dart';
 import 'package:fitend_trainer_app/meeting/provider/schedule_provider.dart';
 import 'package:fitend_trainer_app/notifications/model/notification_setting_model.dart';
 import 'package:fitend_trainer_app/notifications/provider/notification_home_screen_provider.dart';
@@ -184,12 +185,13 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
                     ref.invalidate(threadDetailProvider);
 
                     ref.invalidate(scheduleProvider);
-
                     ref.invalidate(threadCreateProvider);
                     ref.invalidate(commentCreateProvider);
 
                     ref.invalidate(notificationProvider);
                     ref.invalidate(notificationHomeProvider);
+
+                    ref.invalidate(homeStateProvider);
                   },
                   cancelOnTap: () => context.pop(),
                 ),

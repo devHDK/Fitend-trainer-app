@@ -15,10 +15,8 @@ import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
 import 'package:fitend_trainer_app/trainer/provider/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -222,6 +220,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen>
             confirmOnTap: () {
               ref.invalidate(scheduleProvider);
             },
+            dismissable: false,
           ),
         ),
       );
