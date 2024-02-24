@@ -12,14 +12,13 @@ class F {
   static String get title {
     switch (appFlavor) {
       case Flavor.local:
-        return 'fitend for trainer_local';
+        return '핏엔드 코치_local';
       case Flavor.development:
-        return 'fitend tor trainer_dev';
+        return '핏엔드 코치_dev';
       case Flavor.production:
-        return 'fitend for trainer';
+        return '핏엔드 코치';
       default:
         return 'title';
     }
   }
-
 }
