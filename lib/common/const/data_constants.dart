@@ -58,17 +58,6 @@ class StringConstants {
   static String needEmojiCreate = 'emojiCreate';
   static String needEmojiDelete = 'emojiDelete';
 
-  static String workoutRecordSimple = 'WorkoutRecords';
-  static String timerXOneRecord = 'timerXoneRecords';
-  static String timerXMoreRecord = 'timerXMoreRecords';
-  static String timerTotalTimeRecord = 'timerProcessTimeRecord';
-  static String scheduleRecord = 'scheduleRecord';
-  static String workoutResult = 'workoutResult';
-  static String modifiedExercise = 'modifiedExercise';
-  static String workoutFeedback = 'WorkoutFeedback';
-  static String processingExerciseIndex = 'processExerciseIndex';
-  static String registerUserInfo = 'registerUserInfo';
-
   static String isFirstRunWorkout = 'isFirstRunWorkout';
   static String isFirstRunThread = 'isFirstRunThread';
   static String isNeedMeeting = 'isNeedMeeting';
