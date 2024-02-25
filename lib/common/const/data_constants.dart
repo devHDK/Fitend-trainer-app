@@ -73,11 +73,13 @@ class StringConstants {
   static String isFirstRunThread = 'isFirstRunThread';
   static String isNeedMeeting = 'isNeedMeeting';
 
-  static final accessToken =
-      F.appFlavor == Flavor.production ? 'ACCESS_TOKEN' : 'ACCESS_TOKEN_DEV';
-  static final refreshToken =
-      F.appFlavor == Flavor.production ? 'REFRESH_TOKEN' : 'REFRESH_TOKEN_DEV';
-  static const deviceId = 'deviceId';
+  static final accessToken = F.appFlavor == Flavor.production
+      ? 'ACCESS_TOKEN_COACH'
+      : 'ACCESS_TOKEN_COACH_DEV';
+  static final refreshToken = F.appFlavor == Flavor.production
+      ? 'REFRESH_TOKEN_COACH'
+      : 'REFRESH_TOKEN_COACH_DEV';
+  static const deviceId = 'deviceId_coach';
 }
 
 class URLConstants {
@@ -88,8 +90,8 @@ class URLConstants {
       ? emulatorIp
       : simulatorIp;
 
-  // static const devIp = 'https://api-dev.fit-end.com/api/web'; //개발 서버
-  static const devIp = 'http://192.168.0.63:4000/api/web'; //home
+  static const devIp = 'https://api-dev.fit-end.com/api/web'; //개발 서버
+  // static const devIp = 'http://192.168.0.63:4000/api/web'; //home
   // static const devIp = 'http://192.168.0.8:4000/api/web'; //company
   static const deployIp = 'https://api-prod.fit-end.com/api/web';
 
