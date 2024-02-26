@@ -3,7 +3,6 @@ import 'package:fitend_trainer_app/common/dio/dio_upload.dart';
 import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
 import 'package:fitend_trainer_app/thread/model/emojis/emoji_model.dart';
 import 'package:fitend_trainer_app/thread/model/emojis/emoji_params_model.dart';
-import 'package:fitend_trainer_app/thread/model/thread_family_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_check_body.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_create_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_get_list_params_model.dart';

@@ -69,6 +69,7 @@ dependencies:
   flutter_local_notifications: ^15.1.1
   html: ^0.15.4
   store_redirect: ^2.0.1
+  collection: ^1.17.2
 
   #asset edit
   ffmpeg_kit_flutter_min: ^5.1.0

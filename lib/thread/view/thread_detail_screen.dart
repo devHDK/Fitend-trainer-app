@@ -37,7 +37,6 @@ import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class ThreadDetailScreen extends ConsumerStatefulWidget {
   static String get routeName => 'threadDetail';

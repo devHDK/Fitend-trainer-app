@@ -282,7 +282,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ),
                               );
                             }
-                          } catch (e) {}
+                          } catch (e) {
+                            debugPrint('$e');
+                          }
                         },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,

@@ -334,6 +334,8 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
       pstate.commentChecked = true;
 
       state = pstate.copyWith();
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('$e');
+    }
   }
 }

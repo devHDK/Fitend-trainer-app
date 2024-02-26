@@ -6,7 +6,6 @@ import 'package:fitend_trainer_app/meeting/model/meeting_schedule_model.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';

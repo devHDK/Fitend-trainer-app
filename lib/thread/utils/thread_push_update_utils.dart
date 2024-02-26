@@ -40,7 +40,6 @@ class ThreadUpdateUtils {
     List<String> detailRefreshedList = [];
 
     if (isNeedUpdateNoti) {
-      print('ThreadUpdateUtils - isNeedUpdateNoti ');
       ref.read(notificationHomeProvider.notifier).updateIsConfirm(false);
     }
 
