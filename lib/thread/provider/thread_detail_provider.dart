@@ -318,11 +318,11 @@ class ThreadDetailStateNotifier extends StateNotifier<ThreadModelBase> {
     }
   }
 
-  void updateChecked({required int threadId}) {
+  void updateChecked({required int threadId}) async {
     try {
       final pstate = state as ThreadModel;
 
-      threadRepository.putThreadCheckWithId(
+      await threadRepository.putThreadCheckWithId(
         id: threadId,
         body: ThreadCheckBody(
           checked: true,

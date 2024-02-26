@@ -265,7 +265,7 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
             state.data.isEmpty
                 ? Center(
                     child: Text(
-                      '아직 코치님과 함께한 쓰레드가 없어요 🙂',
+                      '아직 회원님과 함께한 쓰레드가 없어요 🙂',
                       style: s2SubTitle.copyWith(
                         color: Colors.white,
                       ),

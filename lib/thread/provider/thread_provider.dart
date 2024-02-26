@@ -265,7 +265,7 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
     state = pstate;
   }
 
-  void updateChecked({required int threadId}) {
+  void updateChecked({required int threadId}) async {
     try {
       final pstate = state as ThreadListModel;
 
@@ -275,7 +275,7 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
 
       state = pstate.copyWith();
 
-      threadRepository.putThreadCheckWithId(
+      await threadRepository.putThreadCheckWithId(
           id: threadId,
           body: ThreadCheckBody(
             checked: true,
