@@ -156,7 +156,9 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen>
   @override
   void didPush() async {
     await _checkIsNeedUpdate();
-    await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+    if (mounted) {
+      await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+    }
 
     super.didPush();
   }

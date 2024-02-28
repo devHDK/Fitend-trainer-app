@@ -135,7 +135,7 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
           ),
           InkWell(
             onTap: () =>
-                DataUtils.onWebViewTap(uri: URLConstants.notionServiceUser),
+                DataUtils.onWebViewTap(uri: URLConstants.notionServiceTrainer),
             child: _renderLabel(
               name: '서비스 이용약관',
               child: SvgPicture.asset(SVGConstants.next),

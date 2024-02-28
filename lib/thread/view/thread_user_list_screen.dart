@@ -79,7 +79,7 @@ class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen>
 
   @override
   void didPopNext() async {
-    await fetch();
+    // await fetch();
 
     super.didPopNext();
   }

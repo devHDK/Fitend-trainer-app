@@ -174,11 +174,14 @@ class ThreadUpdateUtils {
 
         int index = model.data
             .indexWhere((thread) => thread.id == int.parse(data.threadId!));
-
-        if (index != -1 && userRefreshList.contains(pushData)) {
+        if (index != -1 && commentCreateList.contains(pushData)) {
           ref
               .read(threadProvider(user).notifier)
-              .updateTrainerCommentCount(int.parse(data.threadId!), 1);
+              .updateUserCommentCount(int.parse(data.threadId!), 1);
+
+          ref
+              .read(threadProvider(user).notifier)
+              .updateCommentChecked(int.parse(data.threadId!), false);
         }
       }
       await SharedPrefUtils.updateNeedUpdateList(
@@ -218,12 +221,15 @@ class ThreadUpdateUtils {
         int index = model.data
             .indexWhere((thread) => thread.id == int.parse(data.threadId!));
 
-        if (index != -1 && (userRefreshList.contains(pushData))) {
+        if (index != -1 && (commentDeleteList.contains(pushData))) {
           ref
               .read(threadProvider(user).notifier)
-              .updateTrainerCommentCount(int.parse(data.threadId!), -1);
+              .updateUserCommentCount(int.parse(data.threadId!), -1);
         }
       }
+      await SharedPrefUtils.updateNeedUpdateList(
+          StringConstants.needCommentDelete, pref, []);
+      commentDeleteList = [];
     }
 
     if (emojiCreateList.isNotEmpty) {

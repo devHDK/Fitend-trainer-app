@@ -110,6 +110,7 @@ dependencies:
   flutter_native_splash: ^2.2.19
   icons_launcher: ^2.1.1
   flutter_flavorizr: ^2.1.6
+  pub_semver: ^2.1.4
 
 dev_dependencies:
   flutter_test:

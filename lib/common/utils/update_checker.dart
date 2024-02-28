@@ -7,7 +7,7 @@ import 'package:pub_semver/pub_semver.dart';
 ///
 /// 구글은 API를 제공하지 않습니다
 Future<Version> _fetchAndroidVersion() async {
-  const String bundle = 'com.raid.fitend';
+  const String bundle = 'com.raid.fitend.trainer';
   const String url = 'https://play.google.com/store/apps/details?id=$bundle';
   final dio = Dio();
   Response response = await dio.get(url);
@@ -21,7 +21,7 @@ Future<Version> _fetchAndroidVersion() async {
 }
 
 Future<Version> _fetchiOSVersion() async {
-  const String bundle = "com.raid.fitend";
+  const String bundle = "com.raid.fitend.trainer";
   const String url =
       'https://itunes.apple.com/lookup?bundleId=$bundle&country=kr';
   final dio = Dio();

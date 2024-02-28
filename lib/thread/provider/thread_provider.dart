@@ -264,13 +264,14 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
     state = pstate;
   }
 
-  void updateChecked({required int threadId}) async {
+  Future<void> updateCheckedAll({required int threadId}) async {
     try {
       final pstate = state as ThreadListModel;
 
       final threadIndex =
           pstate.data.indexWhere((thread) => thread.id == threadId);
       pstate.data[threadIndex].checked = true;
+      pstate.data[threadIndex].commentChecked = true;
 
       state = pstate.copyWith();
 
@@ -285,7 +286,42 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
     }
   }
 
-  void updateCheckedState({required int threadId}) {
+  Future<void> updateThreadChecked({required int threadId}) async {
+    try {
+      final pstate = state as ThreadListModel;
+
+      final threadIndex =
+          pstate.data.indexWhere((thread) => thread.id == threadId);
+      pstate.data[threadIndex].checked = true;
+
+      state = pstate.copyWith();
+
+      await threadRepository.putThreadCheckWithId(
+        id: threadId,
+        body: ThreadCheckBody(
+          checked: true,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+    }
+  }
+
+  void updateCommentChecked(int threadId, bool checked) {
+    final pstate = state as ThreadListModel;
+
+    int index = pstate.data.indexWhere(
+      (thread) {
+        return thread.id == threadId;
+      },
+    );
+
+    pstate.data[index].commentChecked = checked;
+
+    state = pstate.copyWith();
+  }
+
+  void updateCheckedStateAll({required int threadId}) {
     try {
       final pstate = state as ThreadListModel;
 

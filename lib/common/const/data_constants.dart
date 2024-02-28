@@ -98,8 +98,8 @@ class URLConstants {
   //notion
   static const notionPrivacy =
       "https://weareraid.notion.site/06b383e3c7aa4515a4637c2c11f3d908?pvs=4";
-  static const notionServiceUser =
-      "https://weareraid.notion.site/87468f88c99b427b81ae3e44aeb1f37b?pvs=4";
+  static const notionServiceTrainer =
+      "https://weareraid.notion.site/FITEND-216df634cf064b928d67dc80bd8fe7b7?pvs=4";
   static const notionPurcharse =
       "https://www.notion.so/weareraid/FITEND-28beb6a66c8b4a82ad5b42ecc5774c25?pvs=4";
 }
