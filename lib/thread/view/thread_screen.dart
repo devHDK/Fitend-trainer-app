@@ -30,7 +30,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class ThreadScreen extends ConsumerStatefulWidget {
   static String get routeName => 'thread';

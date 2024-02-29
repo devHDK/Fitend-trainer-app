@@ -41,26 +41,26 @@ enum ThreadType {
 
 class StringConstants {
   // 절대 변경 X
-  static String needNotificationUpdate = 'notificationUpdate';
-  static String hasNewNotification = 'hasNewNotification';
+  static String needNotificationUpdate = 'notificationUpdateCoach';
+  static String hasNewNotification = 'hasNewNotificationCoach';
 
-  static String needScheduleUpdate = 'scheduleUpdate';
+  static String needScheduleUpdate = 'scheduleUpdateCoach';
 
-  static String threadBadgeCount = 'threadBadgeCount';
+  static String threadBadgeCount = 'threadBadgeCountCoach';
 
-  static String needThreadUpdateUserList = 'needThreadUpdateUserList';
-  static String needThreadUpdateList = 'needThreadUpdateList';
-  static String needThreadDelete = 'needThreadDelete';
+  static String needThreadUpdateUserList = 'needThreadUpdateUserListCoach';
+  static String needThreadUpdateList = 'needThreadUpdateListCoach';
+  static String needThreadDelete = 'needThreadDeleteCoach';
 
-  static String needCommentCreate = 'commentCreate';
-  static String needCommentDelete = 'needCommentDelete';
+  static String needCommentCreate = 'commentCreateCoach';
+  static String needCommentDelete = 'needCommentDeleteCoach';
 
-  static String needEmojiCreate = 'emojiCreate';
-  static String needEmojiDelete = 'emojiDelete';
+  static String needEmojiCreate = 'emojiCreateCoach';
+  static String needEmojiDelete = 'emojiDeleteCoach';
 
-  static String isFirstRunWorkout = 'isFirstRunWorkout';
-  static String isFirstRunThread = 'isFirstRunThread';
-  static String isNeedMeeting = 'isNeedMeeting';
+  static String isFirstRunWorkout = 'isFirstRunWorkoutCoach';
+  static String isFirstRunThread = 'isFirstRunThreadCoach';
+  static String isNeedMeeting = 'isNeedMeetingCoach';
 
   static final accessToken = F.appFlavor == Flavor.production
       ? 'ACCESS_TOKEN_COACH'
