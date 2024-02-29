@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main_development.dart
+ASSET_PREFIX=development
+BUNDLE_NAME=핏엔드 코치_dev
+BUNDLE_DISPLAY_NAME=핏엔드 코치_dev
