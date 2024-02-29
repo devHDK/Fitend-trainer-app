@@ -30,7 +30,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class ThreadScreen extends ConsumerStatefulWidget {
   static String get routeName => 'thread';
@@ -177,6 +176,25 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
   void didPop() async {
     if (mounted) {
       await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+
+      final state = ref.read(threadProvider(widget.user));
+      if (state is ThreadListModel) {
+        for (var thread in state.data) {
+          if (thread.checked == false &&
+              thread.userCommentCount != null &&
+              thread.userCommentCount! > 0) {
+            await ref
+                .read(threadProvider(widget.user).notifier)
+                .updateThreadChecked(threadId: thread.id);
+          } else if (thread.checked == false &&
+              thread.userCommentCount != null &&
+              thread.userCommentCount! == 0) {
+            await ref
+                .read(threadProvider(widget.user).notifier)
+                .updateCheckedAll(threadId: thread.id);
+          }
+        }
+      }
     }
     super.didPop();
   }
@@ -221,6 +239,7 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
           confirmOnTap: () {
             ref.invalidate(threadProvider);
           },
+          dismissable: false,
         ),
       );
     }
@@ -264,7 +283,7 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
             state.data.isEmpty
                 ? Center(
                     child: Text(
-                      '아직 코치님과 함께한 쓰레드가 없어요 🙂',
+                      '아직 회원님과 함께한 쓰레드가 없어요 🙂',
                       style: s2SubTitle.copyWith(
                         color: Colors.white,
                       ),
@@ -375,7 +394,8 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
                                   ref
                                       .read(
                                           threadProvider(widget.user).notifier)
-                                      .updateCheckedState(threadId: model.id);
+                                      .updateCheckedStateAll(
+                                          threadId: model.id);
                                 }
 
                                 Navigator.of(context).push(CupertinoPageRoute(
@@ -385,66 +405,50 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
                                   ),
                                 ));
                               },
-                              child: VisibilityDetector(
-                                key: ValueKey('threadId_${model.id}'),
-                                onVisibilityChanged: (info) {
-                                  var visiblePercentage =
-                                      info.visibleFraction * 100;
-
-                                  if (visiblePercentage > 60 &&
-                                      model.checked != null &&
-                                      !model.checked!) {
-                                    ref
-                                        .read(threadProvider(widget.user)
-                                            .notifier)
-                                        .updateChecked(threadId: model.id);
-                                  }
-                                },
-                                child: Stack(
-                                  children: [
-                                    ThreadCell(
-                                      id: model.id,
-                                      title: model.title,
-                                      content: model.content,
-                                      profileImageUrl: model.writerType ==
-                                              'trainer'
-                                          ? '${URLConstants.s3Url}${model.trainer.profileImage}'
-                                          : model.user.gender == 'male'
-                                              ? URLConstants.maleProfileUrl
-                                              : URLConstants.femaleProfileUrl,
-                                      nickname: model.writerType == 'trainer'
-                                          ? model.trainer.nickname
-                                          : model.user.nickname,
-                                      dateTime: DateTime.parse(model.createdAt)
-                                          .toUtc()
-                                          .toLocal(),
-                                      gallery: model.gallery,
-                                      emojis: model.emojis,
-                                      userCommentCount:
-                                          model.userCommentCount != null
-                                              ? model.userCommentCount!
-                                              : 0,
-                                      trainerCommentCount:
-                                          model.trainerCommentCount != null
-                                              ? model.trainerCommentCount!
-                                              : 0,
-                                      user: model.user,
-                                      trainer: model.trainer,
-                                      writerType: model.writerType,
-                                      threadType: model.type,
-                                      workoutInfo: model.workoutInfo,
+                              child: Stack(
+                                children: [
+                                  ThreadCell(
+                                    id: model.id,
+                                    title: model.title,
+                                    content: model.content,
+                                    profileImageUrl: model.writerType ==
+                                            'trainer'
+                                        ? '${URLConstants.s3Url}${model.trainer.profileImage}'
+                                        : model.user.gender == 'male'
+                                            ? URLConstants.maleProfileUrl
+                                            : URLConstants.femaleProfileUrl,
+                                    nickname: model.writerType == 'trainer'
+                                        ? model.trainer.nickname
+                                        : model.user.nickname,
+                                    dateTime: DateTime.parse(model.createdAt)
+                                        .toUtc()
+                                        .toLocal(),
+                                    gallery: model.gallery,
+                                    emojis: model.emojis,
+                                    userCommentCount:
+                                        model.userCommentCount != null
+                                            ? model.userCommentCount!
+                                            : 0,
+                                    trainerCommentCount:
+                                        model.trainerCommentCount != null
+                                            ? model.trainerCommentCount!
+                                            : 0,
+                                    user: model.user,
+                                    trainer: model.trainer,
+                                    writerType: model.writerType,
+                                    threadType: model.type,
+                                    workoutInfo: model.workoutInfo,
+                                  ),
+                                  if ((model.commentChecked != null &&
+                                          !model.commentChecked!) ||
+                                      (model.checked != null &&
+                                          !model.checked!))
+                                    Positioned(
+                                      left: 28,
+                                      child:
+                                          SvgPicture.asset(SVGConstants.redDot),
                                     ),
-                                    if ((model.commentChecked != null &&
-                                            !model.commentChecked!) ||
-                                        (model.checked != null &&
-                                            !model.checked!))
-                                      Positioned(
-                                        left: 28,
-                                        child: SvgPicture.asset(
-                                            SVGConstants.redDot),
-                                      ),
-                                  ],
-                                ),
+                                ],
                               ),
                             ),
                           ],

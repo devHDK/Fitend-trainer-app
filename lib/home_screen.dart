@@ -53,6 +53,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // ref.read(homeStateProvider.notifier).changeTapIndex(0);
+
+      fetch();
+    });
+  }
+
+  void fetch() async {
+    if (mounted &&
+        ref.read(notificationHomeProvider) is NotificationMainModelError) {
+      await ref.read(notificationHomeProvider.notifier).init();
+    }
   }
 
   @override
@@ -128,8 +141,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               : model.tabIndex == 1
                   ? ThreadUserListScreen(key: threadScreenKey)
                   : model.tabIndex == 2
-                      // ignore: prefer_const_constructors
-                      ? NotificationScreen()
+                      ? const NotificationScreen()
                       : const MyPageScreen(),
         ),
       ),

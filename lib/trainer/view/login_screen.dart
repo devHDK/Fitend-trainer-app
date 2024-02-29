@@ -282,7 +282,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ),
                               );
                             }
-                          } catch (e) {}
+                          } catch (e) {
+                            debugPrint('$e');
+                          }
                         },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
@@ -343,8 +345,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               width: 40,
             ),
             TextButton(
-              onPressed: () =>
-                  DataUtils.onWebViewTap(uri: URLConstants.notionServiceUser),
+              onPressed: () => DataUtils.onWebViewTap(
+                  uri: URLConstants.notionServiceTrainer),
               child: Text(
                 '서비스 이용약관',
                 style: s3SubTitle.copyWith(

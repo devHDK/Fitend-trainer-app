@@ -17,7 +17,6 @@ import 'package:fitend_trainer_app/thread/provider/thread_detail_provider.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_provider.dart';
 import 'package:fitend_trainer_app/thread/repository/file_repository.dart';
 import 'package:fitend_trainer_app/thread/repository/thread_comment_repository.dart';
-import 'package:fitend_trainer_app/thread/repository/thread_repository.dart';
 import 'package:fitend_trainer_app/thread/utils/media_utils.dart';
 import 'package:fitend_trainer_app/thread/view/camera_screen.dart';
 import 'package:flutter/cupertino.dart';

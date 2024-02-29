@@ -4,7 +4,6 @@ import 'package:fitend_trainer_app/thread/model/result/workout_list_model.dart';
 import 'package:fitend_trainer_app/thread/model/result/workout_result_model.dart';
 import 'package:fitend_trainer_app/thread/repository/workout_schedule_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart' as intl;
 
 final workoutScheduleProvider = StateNotifierProvider.family<
     ScheduleStateNotifier, WorkoutResultModelBase, int>((ref, id) {

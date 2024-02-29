@@ -3,7 +3,6 @@ import 'package:fitend_trainer_app/common/dio/dio_upload.dart';
 import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
 import 'package:fitend_trainer_app/thread/model/emojis/emoji_model.dart';
 import 'package:fitend_trainer_app/thread/model/emojis/emoji_params_model.dart';
-import 'package:fitend_trainer_app/thread/model/thread_family_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_check_body.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_create_model.dart';
 import 'package:fitend_trainer_app/thread/model/threads/thread_get_list_params_model.dart';
@@ -265,17 +264,18 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
     state = pstate;
   }
 
-  void updateChecked({required int threadId}) {
+  Future<void> updateCheckedAll({required int threadId}) async {
     try {
       final pstate = state as ThreadListModel;
 
       final threadIndex =
           pstate.data.indexWhere((thread) => thread.id == threadId);
       pstate.data[threadIndex].checked = true;
+      pstate.data[threadIndex].commentChecked = true;
 
       state = pstate.copyWith();
 
-      threadRepository.putThreadCheckWithId(
+      await threadRepository.putThreadCheckWithId(
           id: threadId,
           body: ThreadCheckBody(
             checked: true,
@@ -286,7 +286,42 @@ class ThreadStateNotifier extends StateNotifier<ThreadListModelBase> {
     }
   }
 
-  void updateCheckedState({required int threadId}) {
+  Future<void> updateThreadChecked({required int threadId}) async {
+    try {
+      final pstate = state as ThreadListModel;
+
+      final threadIndex =
+          pstate.data.indexWhere((thread) => thread.id == threadId);
+      pstate.data[threadIndex].checked = true;
+
+      state = pstate.copyWith();
+
+      await threadRepository.putThreadCheckWithId(
+        id: threadId,
+        body: ThreadCheckBody(
+          checked: true,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+    }
+  }
+
+  void updateCommentChecked(int threadId, bool checked) {
+    final pstate = state as ThreadListModel;
+
+    int index = pstate.data.indexWhere(
+      (thread) {
+        return thread.id == threadId;
+      },
+    );
+
+    pstate.data[index].commentChecked = checked;
+
+    state = pstate.copyWith();
+  }
+
+  void updateCheckedStateAll({required int threadId}) {
     try {
       final pstate = state as ThreadListModel;
 

@@ -285,7 +285,9 @@ class ThreadCreateStateNotifier extends StateNotifier<ThreadCreateTempModel> {
             commentChecked: true,
           ),
         );
-      } catch (e) {}
+      } catch (e) {
+        debugPrint('$e');
+      }
 
       init();
       if (state.assetsPaths!.isNotEmpty) {

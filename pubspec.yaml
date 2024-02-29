@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: ">=2.19.6 <3.0.0"
@@ -69,6 +69,7 @@ dependencies:
   flutter_local_notifications: ^15.1.1
   html: ^0.15.4
   store_redirect: ^2.0.1
+  collection: ^1.17.2
 
   #asset edit
   ffmpeg_kit_flutter_min: ^5.1.0
@@ -109,6 +110,7 @@ dependencies:
   flutter_native_splash: ^2.2.19
   icons_launcher: ^2.1.1
   flutter_flavorizr: ^2.1.6
+  pub_semver: ^2.1.4
 
 dev_dependencies:
   flutter_test:
@@ -189,9 +191,9 @@ flavorizr:
         name: "핏엔드 코치"
 
       android:
-        applicationId: "com.raid.trainer.fitend"
+        applicationId: "com.raid.fitend.trainer"
       ios:
-        bundleId: "com.raid.trainer.fitend"
+        bundleId: "com.raid.fitend.trainer"
 
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen

@@ -9,6 +9,7 @@ import 'package:fitend_trainer_app/thread/model/common/thread_user_model.dart';
 import 'package:fitend_trainer_app/thread/model/userlist/thread_user_list_model.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_user_list_provider.dart';
 import 'package:fitend_trainer_app/thread/view/thread_screen.dart';
+import 'package:fitend_trainer_app/trainer/provider/go_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +25,8 @@ class ThreadUserListScreen extends ConsumerStatefulWidget {
       ThreadUserListScreenState();
 }
 
-class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen> {
+class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen>
+    with RouteAware, WidgetsBindingObserver {
   final _searchController = TextEditingController();
   // final BehaviorSubject<String> _subject = BehaviorSubject<String>();
   final ScrollController _scrollController = ScrollController();
@@ -35,6 +37,7 @@ class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // _searchController.addListener(_onSearchTextChanged);
     // _subject.stream
     //     .debounceTime(const Duration(milliseconds: 500))
@@ -53,11 +56,49 @@ class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen> {
   //       );
   // }
 
+  Future<void> fetch() async {
+    if (mounted) {
+      await ref.read(threadUserListProvider.notifier).getThreadUsers();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ref
+        .read(routeObserverProvider)
+        .subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
 
     super.dispose();
+  }
+
+  @override
+  void didPopNext() async {
+    // await fetch();
+
+    super.didPopNext();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        await fetch();
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.paused:
+        break;
+      case AppLifecycleState.detached:
+        break;
+      case AppLifecycleState.hidden:
+        break;
+    }
   }
 
   @override
@@ -67,9 +108,10 @@ class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen> {
     if (state is ThreadUserListModelLoading ||
         state is ThreadUserListModelError) {
       return const Center(
-          child: CircularProgressIndicator(
-        color: Pallete.point,
-      ));
+        child: CircularProgressIndicator(
+          color: Pallete.point,
+        ),
+      );
     }
 
     final userListModel = state as ThreadUserListModel;

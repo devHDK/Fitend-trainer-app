@@ -41,6 +41,8 @@ class NotificationStateNotifier extends StateNotifier<NotificationModelBase> {
           data: pState.data,
           total: pState.total,
         );
+      } else {
+        state = NotificationModelLoading();
       }
 
       final response = await repository.getNotifications(

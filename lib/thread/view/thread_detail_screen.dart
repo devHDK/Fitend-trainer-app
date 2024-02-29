@@ -22,6 +22,7 @@ import 'package:fitend_trainer_app/thread/model/threads/thread_comment_edit_mode
 import 'package:fitend_trainer_app/thread/model/threads/thread_model.dart';
 import 'package:fitend_trainer_app/thread/provider/comment_create_provider.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_detail_provider.dart';
+import 'package:fitend_trainer_app/thread/provider/thread_provider.dart';
 import 'package:fitend_trainer_app/thread/utils/media_utils.dart';
 import 'package:fitend_trainer_app/thread/utils/thread_push_update_utils.dart';
 import 'package:fitend_trainer_app/thread/view/comment_asset_edit_screen.dart';
@@ -37,7 +38,6 @@ import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class ThreadDetailScreen extends ConsumerStatefulWidget {
   static String get routeName => 'threadDetail';
@@ -126,13 +126,21 @@ class _ThreadDetailScreenState extends ConsumerState<ThreadDetailScreen>
 
   @override
   void didPush() async {
-    await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+    if (mounted) {
+      await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+    }
     super.didPush();
   }
 
   @override
   void didPop() async {
-    await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+    if (mounted) {
+      await ThreadUpdateUtils.checkThreadNeedUpdate(ref);
+      ref
+          .read(threadProvider(widget.user).notifier)
+          .updateCheckedAll(threadId: widget.threadId);
+    }
+
     super.didPop();
   }
 

@@ -8,7 +8,6 @@ import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart' as intl;
 
 final scheduleProvider =
     StateNotifierProvider<ScheduleStateNotifier, ScheduleModelBase>((ref) {

@@ -40,7 +40,6 @@ class ThreadUpdateUtils {
     List<String> detailRefreshedList = [];
 
     if (isNeedUpdateNoti) {
-      print('ThreadUpdateUtils - isNeedUpdateNoti ');
       ref.read(notificationHomeProvider.notifier).updateIsConfirm(false);
     }
 
@@ -62,6 +61,7 @@ class ThreadUpdateUtils {
               .paginate(startIndex: 0, isRefetch: true);
 
           userRefreshList.add(pushData);
+          debugPrint('[debug] Thread List updated ${data.nickname}');
         }
       }
 
@@ -73,7 +73,6 @@ class ThreadUpdateUtils {
       await SharedPrefUtils.updateNeedUpdateList(
           StringConstants.needThreadDelete, pref, []);
       threadDeleteList = [];
-      debugPrint('[debug] Thread List updated');
     }
 
     if (threadUpdateList.isNotEmpty) {
@@ -175,11 +174,14 @@ class ThreadUpdateUtils {
 
         int index = model.data
             .indexWhere((thread) => thread.id == int.parse(data.threadId!));
-
-        if (index != -1 && userRefreshList.contains(pushData)) {
+        if (index != -1 && commentCreateList.contains(pushData)) {
           ref
               .read(threadProvider(user).notifier)
-              .updateTrainerCommentCount(int.parse(data.threadId!), 1);
+              .updateUserCommentCount(int.parse(data.threadId!), 1);
+
+          ref
+              .read(threadProvider(user).notifier)
+              .updateCommentChecked(int.parse(data.threadId!), false);
         }
       }
       await SharedPrefUtils.updateNeedUpdateList(
@@ -219,12 +221,15 @@ class ThreadUpdateUtils {
         int index = model.data
             .indexWhere((thread) => thread.id == int.parse(data.threadId!));
 
-        if (index != -1 && (userRefreshList.contains(pushData))) {
+        if (index != -1 && (commentDeleteList.contains(pushData))) {
           ref
               .read(threadProvider(user).notifier)
-              .updateTrainerCommentCount(int.parse(data.threadId!), -1);
+              .updateUserCommentCount(int.parse(data.threadId!), -1);
         }
       }
+      await SharedPrefUtils.updateNeedUpdateList(
+          StringConstants.needCommentDelete, pref, []);
+      commentDeleteList = [];
     }
 
     if (emojiCreateList.isNotEmpty) {
