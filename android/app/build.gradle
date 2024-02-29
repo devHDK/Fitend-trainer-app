@@ -58,7 +58,7 @@ android {
         }
         production {
             dimension "flavor-type"
-            applicationId "com.raid.trainer.fitend"
+            applicationId "com.raid.fitend.trainer"
             resValue "string", "app_name", "핏엔드 코치"
         }
     }

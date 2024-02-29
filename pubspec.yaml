@@ -191,9 +191,9 @@ flavorizr:
         name: "핏엔드 코치"
 
       android:
-        applicationId: "com.raid.trainer.fitend"
+        applicationId: "com.raid.fitend.trainer"
       ios:
-        bundleId: "com.raid.trainer.fitend"
+        bundleId: "com.raid.fitend.trainer"
 
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen

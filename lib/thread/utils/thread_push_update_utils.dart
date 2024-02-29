@@ -61,6 +61,7 @@ class ThreadUpdateUtils {
               .paginate(startIndex: 0, isRefetch: true);
 
           userRefreshList.add(pushData);
+          debugPrint('[debug] Thread List updated ${data.nickname}');
         }
       }
 
@@ -72,7 +73,6 @@ class ThreadUpdateUtils {
       await SharedPrefUtils.updateNeedUpdateList(
           StringConstants.needThreadDelete, pref, []);
       threadDeleteList = [];
-      debugPrint('[debug] Thread List updated');
     }
 
     if (threadUpdateList.isNotEmpty) {
