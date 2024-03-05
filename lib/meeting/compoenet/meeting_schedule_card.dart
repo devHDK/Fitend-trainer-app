@@ -39,7 +39,7 @@ class MeetingScheduleCard extends ConsumerStatefulWidget {
   });
 
   factory MeetingScheduleCard.fromMeetingSchedule({
-    required MeetigSchedule model,
+    required MeetingSchedule model,
     DateTime? date,
     bool? isDateVisible,
     required Trainer trainer,

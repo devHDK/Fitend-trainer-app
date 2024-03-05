@@ -321,7 +321,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen>
                         },
                         child: MeetingScheduleCard.fromMeetingSchedule(
                           date: schedules.data[index - 1].startDate,
-                          model: e as MeetigSchedule,
+                          model: e as MeetingSchedule,
                           isDateVisible: seq == 0 ? true : false,
                           trainer: trainerModel.trainer,
                         ),

@@ -6,14 +6,14 @@ part 'meeting_schedule_model.g.dart';
 @JsonSerializable()
 class MeetingScheduleModel {
   @JsonKey(name: "data")
-  final List<MeetigSchedule> data;
+  final List<MeetingSchedule> data;
 
   MeetingScheduleModel({
     required this.data,
   });
 
   MeetingScheduleModel copyWith({
-    List<MeetigSchedule>? data,
+    List<MeetingSchedule>? data,
   }) =>
       MeetingScheduleModel(
         data: data ?? this.data,
@@ -26,7 +26,7 @@ class MeetingScheduleModel {
 }
 
 @JsonSerializable()
-class MeetigSchedule {
+class MeetingSchedule {
   @JsonKey(name: "id")
   final int id;
   @JsonKey(
@@ -47,7 +47,7 @@ class MeetigSchedule {
   final TrainerProfile trainer;
   bool? selected;
 
-  MeetigSchedule({
+  MeetingSchedule({
     required this.id,
     required this.startTime,
     required this.endTime,
@@ -57,7 +57,7 @@ class MeetigSchedule {
     this.selected = false,
   });
 
-  MeetigSchedule copyWith({
+  MeetingSchedule copyWith({
     int? id,
     DateTime? startTime,
     DateTime? endTime,
@@ -66,7 +66,7 @@ class MeetigSchedule {
     TrainerProfile? trainer,
     bool? selected,
   }) =>
-      MeetigSchedule(
+      MeetingSchedule(
         id: id ?? this.id,
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime,
@@ -76,10 +76,10 @@ class MeetigSchedule {
         selected: selected ?? this.selected,
       );
 
-  factory MeetigSchedule.fromJson(Map<String, dynamic> json) =>
-      _$MeetigScheduleFromJson(json);
+  factory MeetingSchedule.fromJson(Map<String, dynamic> json) =>
+      _$MeetingScheduleFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MeetigScheduleToJson(this);
+  Map<String, dynamic> toJson() => _$MeetingScheduleToJson(this);
 }
 
 @JsonSerializable()

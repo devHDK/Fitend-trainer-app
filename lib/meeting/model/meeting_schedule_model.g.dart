@@ -10,7 +10,7 @@ MeetingScheduleModel _$MeetingScheduleModelFromJson(
         Map<String, dynamic> json) =>
     MeetingScheduleModel(
       data: (json['data'] as List<dynamic>)
-          .map((e) => MeetigSchedule.fromJson(e as Map<String, dynamic>))
+          .map((e) => MeetingSchedule.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -20,8 +20,8 @@ Map<String, dynamic> _$MeetingScheduleModelToJson(
       'data': instance.data,
     };
 
-MeetigSchedule _$MeetigScheduleFromJson(Map<String, dynamic> json) =>
-    MeetigSchedule(
+MeetingSchedule _$MeetingScheduleFromJson(Map<String, dynamic> json) =>
+    MeetingSchedule(
       id: json['id'] as int,
       startTime: DataUtils.dateTimeToLocal(json['startTime'] as String),
       endTime: DataUtils.dateTimeToLocal(json['endTime'] as String),
@@ -31,7 +31,7 @@ MeetigSchedule _$MeetigScheduleFromJson(Map<String, dynamic> json) =>
       selected: json['selected'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$MeetigScheduleToJson(MeetigSchedule instance) =>
+Map<String, dynamic> _$MeetingScheduleToJson(MeetingSchedule instance) =>
     <String, dynamic>{
       'id': instance.id,
       'startTime': instance.startTime.toIso8601String(),

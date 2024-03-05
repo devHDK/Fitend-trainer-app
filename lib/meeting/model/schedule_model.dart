@@ -24,6 +24,15 @@ class ScheduleModel extends ScheduleModelBase {
     this.scrollIndex,
   });
 
+  ScheduleModel copyWith({
+    List<ScheduleData>? data,
+    int? scrollIndex,
+  }) =>
+      ScheduleModel(
+        data: data ?? this.data,
+        scrollIndex: scrollIndex ?? this.scrollIndex,
+      );
+
   factory ScheduleModel.fromJson(Map<String, dynamic> json) =>
       _$ScheduleModelFromJson(json);
 

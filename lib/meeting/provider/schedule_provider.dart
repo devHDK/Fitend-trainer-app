@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:fitend_trainer_app/common/provider/shared_preference_provider.dart';
 import 'package:fitend_trainer_app/common/utils/data_utils.dart';
 import 'package:fitend_trainer_app/meeting/model/get_schedule_pagenate_params.dart';
+import 'package:fitend_trainer_app/meeting/model/meeting_schedule_model.dart';
 import 'package:fitend_trainer_app/meeting/model/schedule_model.dart';
 import 'package:fitend_trainer_app/meeting/repository/meeting_schedule_repository.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
@@ -141,5 +143,102 @@ class ScheduleStateNotifier extends StateNotifier<ScheduleModelBase> {
     pstate.scrollIndex = scrollIndex;
 
     state = pstate;
+  }
+
+  void addMeetingSchedule({required MeetingSchedule model}) {
+    final pstate = state as ScheduleModel;
+
+    final scheduleIndex = pstate.data.indexWhere((schedule) {
+      return schedule.startDate.year == model.startTime.year &&
+          schedule.startDate.month == model.startTime.month &&
+          schedule.startDate.day == model.startTime.day;
+    });
+
+    if (scheduleIndex == -1) return;
+
+    if (pstate.data[scheduleIndex].schedule!.isEmpty) {
+      pstate.data[scheduleIndex].schedule!.add(model);
+    } else {
+      int index = binarySearch(
+        pstate.data[scheduleIndex].schedule!,
+        model,
+        compare: (p0, p1) {
+          final a = p0 as MeetingSchedule;
+          final b = p1 as MeetingSchedule;
+
+          return a.startTime.compareTo(b.startTime);
+        },
+      );
+
+      pstate.data[scheduleIndex].schedule!.insert(index, model);
+    }
+
+    state = pstate.copyWith();
+  }
+
+  void updateMeetingSchedule({
+    required DateTime originStartTime,
+    required MeetingSchedule model,
+  }) {
+    final pstate = state as ScheduleModel;
+
+    final beforeScheduleIndex = pstate.data.indexWhere((schedule) {
+      return schedule.startDate.year == originStartTime.year &&
+          schedule.startDate.month == originStartTime.month &&
+          schedule.startDate.day == originStartTime.day;
+    });
+
+    pstate.data[beforeScheduleIndex].schedule!.removeWhere((element) {
+      final meeting = element as MeetingSchedule;
+
+      return meeting.id == model.id;
+    });
+
+    final afterScheduleIndex = pstate.data.indexWhere((schedule) {
+      return schedule.startDate.year == model.startTime.year &&
+          schedule.startDate.month == model.startTime.month &&
+          schedule.startDate.day == model.startTime.day;
+    });
+
+    if (afterScheduleIndex == -1) return;
+
+    if (pstate.data[afterScheduleIndex].schedule!.isEmpty) {
+      pstate.data[afterScheduleIndex].schedule!.add(model);
+    } else {
+      int index = binarySearch(
+        pstate.data[afterScheduleIndex].schedule!,
+        model,
+        compare: (p0, p1) {
+          final a = p0 as MeetingSchedule;
+          final b = p1 as MeetingSchedule;
+
+          return a.startTime.compareTo(b.startTime);
+        },
+      );
+
+      pstate.data[afterScheduleIndex].schedule!.insert(index, model);
+    }
+
+    state = pstate.copyWith();
+  }
+
+  void deleteMeetingSchedule({
+    required MeetingSchedule model,
+  }) {
+    final pstate = state as ScheduleModel;
+
+    final index = pstate.data.indexWhere((schedule) {
+      return schedule.startDate.year == model.startTime.year &&
+          schedule.startDate.month == model.startTime.month &&
+          schedule.startDate.day == model.startTime.day;
+    });
+
+    pstate.data[index].schedule!.removeWhere((element) {
+      final meeting = element as MeetingSchedule;
+
+      return meeting.id == model.id;
+    });
+
+    state = pstate.copyWith();
   }
 }
