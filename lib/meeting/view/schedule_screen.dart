@@ -1,4 +1,5 @@
 import 'package:fitend_trainer_app/common/component/dialog_widgets.dart';
+import 'package:fitend_trainer_app/common/const/aseet_constants.dart';
 import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/const/text_style.dart';
@@ -15,6 +16,7 @@ import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
 import 'package:fitend_trainer_app/trainer/provider/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -331,6 +333,17 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen>
             }
             return const SizedBox();
           },
+        ),
+        Positioned(
+          right: 28,
+          bottom: 20,
+          child: FloatingActionButton(
+            onPressed: () {
+              //TODO: 생성
+            },
+            backgroundColor: Colors.transparent,
+            child: SvgPicture.asset(SVGConstants.threadCreateButton),
+          ),
         ),
       ],
     );

@@ -46,7 +46,7 @@ class MeetingScheduleCard extends ConsumerStatefulWidget {
   }) {
     return MeetingScheduleCard(
       date: date,
-      title: '${model.userNickname} 회원님 과 미팅이 있어요 👋',
+      title: '${model.userNickname} 회원님과 미팅이 있어요 👋',
       subTitle:
           '${DateFormat('HH:mm').format(model.startTime.toUtc().toLocal())} ~ ${DateFormat('HH:mm').format(model.endTime.toUtc().toLocal())} (${model.endTime.difference(model.startTime.toUtc().toLocal()).inMinutes}분)',
       selected: model.selected!,
@@ -186,46 +186,61 @@ class _ScheduleCardState extends ConsumerState<MeetingScheduleCard> {
                   const SizedBox(
                     height: 23,
                   ),
-                  SizedBox(
-                    width: 100.w,
-                    height: 44,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Pallete.point,
-                      ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent, elevation: 0),
-                        onPressed: () {
-                          launchUrl(
-                            Uri.parse(widget.meetingLink),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.videocam,
-                              size: 19,
-                              color: Pallete.lightGray,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              'Zoom',
-                              style: h6Headline.copyWith(
-                                color: Colors.white,
-                                height: 1,
-                              ),
-                            ),
-                          ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: _Button(
+                          widget: widget,
+                          color: Pallete.point,
+                          onTap: () {
+                            //TODO: 수정페이지
+                          },
+                          child: Text(
+                            '수정하기',
+                            style: h6Headline.copyWith(color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                  )
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: _Button(
+                          widget: widget,
+                          color: Pallete.zoomBlue,
+                          onTap: () {
+                            launchUrl(
+                              Uri.parse(widget.meetingLink),
+                              mode: LaunchMode.externalApplication,
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.videocam,
+                                size: 19,
+                                color: Pallete.lightGray,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Zoom',
+                                style: h6Headline.copyWith(
+                                  color: Colors.white,
+                                  height: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             if (!widget.selected)
@@ -238,6 +253,40 @@ class _ScheduleCardState extends ConsumerState<MeetingScheduleCard> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _Button extends StatelessWidget {
+  const _Button({
+    required this.widget,
+    required this.child,
+    required this.color,
+    required this.onTap,
+  });
+
+  final MeetingScheduleCard widget;
+  final Widget child;
+  final Color color;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 44,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: color,
+        ),
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent, elevation: 0),
+            onPressed: () {
+              onTap();
+            },
+            child: child),
       ),
     );
   }
