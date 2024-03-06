@@ -8,6 +8,7 @@ import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/common/utils/data_utils.dart';
 import 'package:fitend_trainer_app/meeting/model/meeting_schedule_model.dart';
+import 'package:fitend_trainer_app/meeting/model/put_meeting_model.dart';
 import 'package:fitend_trainer_app/meeting/provider/meeting_update_provider.dart';
 import 'package:fitend_trainer_app/meeting/provider/schedule_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +17,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ndialog/ndialog.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class MeetingUpdateScreen extends ConsumerStatefulWidget {
@@ -72,38 +72,9 @@ class _MeetingUpdateScreenState extends ConsumerState<MeetingUpdateScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 18),
-            child: TextButton(
-              onPressed: () async {
-                try {
-                  await ref
-                      .read(meetingUpdateProvider(widget.meeting.id).notifier)
-                      .deleteMeeting()
-                      .then(
-                    (value) {
-                      DialogWidgets.showToast(
-                        content: '미팅일정을 삭제했어요 ✅',
-                        gravity: ToastGravity.CENTER,
-                      );
-
-                      ref
-                          .read(scheduleProvider.notifier)
-                          .deleteMeetingSchedule(model: widget.meeting);
-
-                      context.pop();
-                    },
-                  );
-                } catch (e) {
-                  DialogWidgets.oneButtonDialog(
-                    message: '다시 시도해 주세요!',
-                    confirmText: '확인',
-                    confirmOnTap: () => context.pop(),
-                  );
-                }
-              },
-              child: Text(
-                '삭제하기',
-                style: h6Headline.copyWith(color: Pallete.point),
-              ),
+            child: _DeleteButton(
+              ref: ref,
+              widget: widget,
             ),
           )
         ],
@@ -130,21 +101,7 @@ class _MeetingUpdateScreenState extends ConsumerState<MeetingUpdateScreen> {
                     ),
                     const SizedBox(width: 55),
                     Expanded(
-                      child: Container(
-                        height: 44,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1, color: Pallete.darkGray),
-                        ),
-                        child: Center(
-                          child: Text(
-                            widget.meeting.userNickname,
-                            style: s1SubTitle.copyWith(
-                              color: Pallete.gray,
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: _UserNameContainer(widget: widget),
                     )
                   ],
                 ),
@@ -160,82 +117,10 @@ class _MeetingUpdateScreenState extends ConsumerState<MeetingUpdateScreen> {
                     ),
                     const SizedBox(width: 55),
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return CalendarDialog(
-                                selectedDate: model.startTime,
-                              );
-                            },
-                          ).then(
-                            (value) {
-                              if (value != null) {
-                                DateTime selectedDay = value['selectedDay'];
-                                final changedStartTime = DateTime(
-                                    selectedDay.year,
-                                    selectedDay.month,
-                                    selectedDay.day,
-                                    model.startTime.hour,
-                                    model.startTime.minute);
-
-                                if (changedStartTime.isBefore(DateTime.now())) {
-                                  DialogWidgets.showToast(
-                                    content: '현재 시간보다 이후에 시간을 설정해 주세요',
-                                    gravity: ToastGravity.CENTER,
-                                  );
-
-                                  ref
-                                      .read(meetingUpdateProvider(
-                                              widget.meeting.id)
-                                          .notifier)
-                                      .init(
-                                        startTime: widget.meeting.startTime,
-                                        endTime: widget.meeting.endTime,
-                                      );
-                                } else {
-                                  ref
-                                      .read(meetingUpdateProvider(
-                                              widget.meeting.id)
-                                          .notifier)
-                                      .updateState(
-                                        startTime: changedStartTime,
-                                        endTime: changedStartTime
-                                            .add(const Duration(minutes: 15)),
-                                      );
-                                }
-                              }
-                            },
-                          );
-                        },
-                        child: Stack(
-                          children: [
-                            Container(
-                              height: 44,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    width: 1, color: Pallete.darkGray),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  DataUtils.getDateString(model.startTime),
-                                  style:
-                                      s1SubTitle.copyWith(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 18,
-                              top: 11,
-                              child: SvgPicture.asset(
-                                SVGConstants.calendar,
-                                height: 20,
-                              ),
-                            )
-                          ],
-                        ),
+                      child: _DateContainer(
+                        model: model,
+                        ref: ref,
+                        widget: widget,
                       ),
                     )
                   ],
@@ -253,113 +138,16 @@ class _MeetingUpdateScreenState extends ConsumerState<MeetingUpdateScreen> {
                     const SizedBox(width: 55),
                     Expanded(
                       flex: 2,
-                      child: GestureDetector(
-                        onTap: () async {
-                          await showCupertinoModalPopup(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return _buildContainer(
-                                CustomTimePicker(
-                                  hour: model.startTime.hour,
-                                  minute: model.startTime.minute,
-                                ),
-                              );
-                            },
-                          ).then((value) {
-                            if (value != null) {
-                              final hour = value['hour'];
-                              final minute = value['minute'];
-
-                              final changedStartTime = DateTime(
-                                  model.startTime.year,
-                                  model.startTime.month,
-                                  model.startTime.day,
-                                  hour,
-                                  minute);
-
-                              if (changedStartTime.isBefore(DateTime.now())) {
-                                DialogWidgets.showToast(
-                                  content: '현재 시간보다 이후에 시간을 설정해 주세요',
-                                  gravity: ToastGravity.CENTER,
-                                );
-                              } else {
-                                ref
-                                    .read(
-                                        meetingUpdateProvider(widget.meeting.id)
-                                            .notifier)
-                                    .updateState(
-                                      startTime: changedStartTime,
-                                      endTime: changedStartTime
-                                          .add(const Duration(minutes: 15)),
-                                    );
-                              }
-                            }
-                          });
-                        },
-                        child: Container(
-                          height: 44,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border:
-                                Border.all(width: 1, color: Pallete.darkGray),
-                          ),
-                          child: Center(
-                            child: Text(
-                              DataUtils.getTimeString(model.startTime),
-                              style: s1SubTitle.copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: _TimePickContainer(
+                          model: model, ref: ref, widget: widget),
                     ),
                     const SizedBox(
                       width: 20,
                     ),
                     Expanded(
                       flex: 1,
-                      child: GestureDetector(
-                        onTap: () async {
-                          await showCupertinoModalPopup(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return _buildContainer(
-                                CustomNumberPicker(
-                                  minute: model.endTime
-                                      .difference(model.startTime)
-                                      .inMinutes,
-                                ),
-                              );
-                            },
-                          ).then((value) {
-                            if (value != null) {
-                              int minute = value['minute'];
-                              DateTime changedEndTime = model.startTime
-                                  .add(Duration(minutes: minute));
-
-                              ref
-                                  .read(meetingUpdateProvider(widget.meeting.id)
-                                      .notifier)
-                                  .updateState(
-                                    endTime: changedEndTime,
-                                  );
-                            }
-                          });
-                        },
-                        child: Container(
-                          height: 44,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border:
-                                Border.all(width: 1, color: Pallete.darkGray),
-                          ),
-                          child: Center(
-                            child: Text(
-                              '${model.endTime.difference(model.startTime).inMinutes.toString()} 분',
-                              style: s1SubTitle.copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: _DurationSelectContainer(
+                          model: model, ref: ref, widget: widget),
                     )
                   ],
                 )
@@ -369,99 +157,385 @@ class _MeetingUpdateScreenState extends ConsumerState<MeetingUpdateScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: TextButton(
-        onPressed: !isLoading
-            ? () async {
-                try {
-                  setState(() {
-                    isLoading = true;
-                  });
+      floatingActionButton: _completeButton(model, context),
+    );
+  }
 
-                  if (model.startTime.isBefore(DateTime.now())) {
-                    DialogWidgets.showToast(
-                      content: '현재 시간보다 이후에 시간을 설정해 주세요',
-                      gravity: ToastGravity.CENTER,
-                    );
+  TextButton _completeButton(PutMeetingModel model, BuildContext context) {
+    return TextButton(
+      onPressed: !isLoading
+          ? () async {
+              try {
+                setState(() {
+                  isLoading = true;
+                });
 
-                    setState(() {
-                      isLoading = false;
-                    });
-
-                    return;
-                  }
-
-                  await ref
-                      .read(meetingUpdateProvider(widget.meeting.id).notifier)
-                      .updateMeeting()
-                      .then((value) {
-                    DialogWidgets.showToast(
-                      content: '미팅일정을 수정했어요 ✅',
-                      gravity: ToastGravity.CENTER,
-                    );
-
-                    ref.read(scheduleProvider.notifier).updateMeetingSchedule(
-                          originStartTime: widget.meeting.startTime,
-                          model: MeetingSchedule(
-                            id: widget.meeting.id,
-                            startTime: model.startTime,
-                            endTime: model.endTime,
-                            status: 'complete',
-                            userNickname: widget.meeting.userNickname,
-                            trainer: widget.meeting.trainer,
-                          ),
-                        );
-
-                    context.pop();
-                  });
-                } catch (e) {
-                  debugPrint('$e');
-
-                  if (!context.mounted) return;
-
-                  String message = '다시 시도해주세요!';
-
-                  if (e is DioException) {
-                    if (e.response != null && e.response!.statusCode == 409) {
-                      message = '선택하신 일정과 겹치는 스케줄이 있어요 😅';
-                    }
-                  }
-
-                  DialogWidgets.oneButtonDialog(
-                    message: message,
-                    confirmText: '확인',
-                    confirmOnTap: () => context.pop(),
-                  ).show(context);
+                if (model.startTime.isBefore(DateTime.now())) {
+                  DialogWidgets.showToast(
+                    content: '현재 시간보다 이후에 시간을 설정해 주세요',
+                    gravity: ToastGravity.CENTER,
+                  );
 
                   setState(() {
                     isLoading = false;
                   });
+
+                  return;
                 }
+
+                await ref
+                    .read(meetingUpdateProvider(widget.meeting.id).notifier)
+                    .updateMeeting()
+                    .then((value) {
+                  DialogWidgets.showToast(
+                    content: '미팅일정을 수정했어요 ✅',
+                    gravity: ToastGravity.CENTER,
+                  );
+
+                  ref.read(scheduleProvider.notifier).updateMeetingSchedule(
+                        originStartTime: widget.meeting.startTime,
+                        model: MeetingSchedule(
+                          id: widget.meeting.id,
+                          startTime: model.startTime,
+                          endTime: model.endTime,
+                          status: 'complete',
+                          userNickname: widget.meeting.userNickname,
+                          trainer: widget.meeting.trainer,
+                        ),
+                      );
+
+                  context.pop();
+                });
+              } catch (e) {
+                debugPrint('$e');
+
+                if (!context.mounted) return;
+
+                String message = '다시 시도해주세요!';
+
+                if (e is DioException) {
+                  if (e.response != null && e.response!.statusCode == 409) {
+                    message = '선택하신 일정과 겹치는 스케줄이 있어요 😅';
+                  }
+                }
+
+                DialogWidgets.oneButtonDialog(
+                  message: message,
+                  confirmText: '확인',
+                  confirmOnTap: () => context.pop(),
+                ).show(context);
+
+                setState(() {
+                  isLoading = false;
+                });
               }
-            : null,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Container(
-            height: 44,
-            width: 100.w,
-            decoration: BoxDecoration(
-              color: Pallete.point,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: isLoading
-                  ? const SizedBox(
-                      height: 35,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
-                    )
-                  : Text(
-                      '완료',
-                      style: h6Headline.copyWith(color: Colors.white),
+            }
+          : null,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Container(
+          height: 44,
+          width: 100.w,
+          decoration: BoxDecoration(
+            color: Pallete.point,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: isLoading
+                ? const SizedBox(
+                    height: 35,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
                     ),
-            ),
+                  )
+                : Text(
+                    '완료',
+                    style: h6Headline.copyWith(color: Colors.white),
+                  ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _DurationSelectContainer extends StatelessWidget {
+  const _DurationSelectContainer({
+    required this.model,
+    required this.ref,
+    required this.widget,
+  });
+
+  final PutMeetingModel model;
+  final WidgetRef ref;
+  final MeetingUpdateScreen widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        await showCupertinoModalPopup(
+          context: context,
+          builder: (BuildContext context) {
+            return _buildContainer(
+              CustomNumberPicker(
+                minute: model.endTime.difference(model.startTime).inMinutes,
+              ),
+            );
+          },
+        ).then((value) {
+          if (value != null) {
+            int minute = value['minute'];
+            DateTime changedEndTime =
+                model.startTime.add(Duration(minutes: minute));
+
+            ref
+                .read(meetingUpdateProvider(widget.meeting.id).notifier)
+                .updateState(
+                  endTime: changedEndTime,
+                );
+          }
+        });
+      },
+      child: Container(
+        height: 44,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(width: 1, color: Pallete.darkGray),
+        ),
+        child: Center(
+          child: Text(
+            '${model.endTime.difference(model.startTime).inMinutes.toString()} 분',
+            style: s1SubTitle.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TimePickContainer extends StatelessWidget {
+  const _TimePickContainer({
+    required this.model,
+    required this.ref,
+    required this.widget,
+  });
+
+  final PutMeetingModel model;
+  final WidgetRef ref;
+  final MeetingUpdateScreen widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        await showCupertinoModalPopup(
+          context: context,
+          builder: (BuildContext context) {
+            return _buildContainer(
+              CustomTimePicker(
+                hour: model.startTime.hour,
+                minute: model.startTime.minute,
+              ),
+            );
+          },
+        ).then((value) {
+          if (value != null) {
+            final hour = value['hour'];
+            final minute = value['minute'];
+
+            final changedStartTime = DateTime(model.startTime.year,
+                model.startTime.month, model.startTime.day, hour, minute);
+
+            if (changedStartTime.isBefore(DateTime.now())) {
+              DialogWidgets.showToast(
+                content: '현재 시간보다 이후에 시간을 설정해 주세요',
+                gravity: ToastGravity.CENTER,
+              );
+            } else {
+              ref
+                  .read(meetingUpdateProvider(widget.meeting.id).notifier)
+                  .updateState(
+                    startTime: changedStartTime,
+                    endTime: changedStartTime.add(const Duration(minutes: 15)),
+                  );
+            }
+          }
+        });
+      },
+      child: Container(
+        height: 44,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(width: 1, color: Pallete.darkGray),
+        ),
+        child: Center(
+          child: Text(
+            DataUtils.getTimeString(model.startTime),
+            style: s1SubTitle.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DateContainer extends StatelessWidget {
+  const _DateContainer({
+    required this.model,
+    required this.ref,
+    required this.widget,
+  });
+
+  final PutMeetingModel model;
+  final WidgetRef ref;
+  final MeetingUpdateScreen widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return CalendarDialog(
+              selectedDate: model.startTime,
+            );
+          },
+        ).then(
+          (value) {
+            if (value != null) {
+              DateTime selectedDay = value['selectedDay'];
+              final changedStartTime = DateTime(
+                  selectedDay.year,
+                  selectedDay.month,
+                  selectedDay.day,
+                  model.startTime.hour,
+                  model.startTime.minute);
+
+              if (changedStartTime.isBefore(DateTime.now())) {
+                DialogWidgets.showToast(
+                  content: '현재 시간보다 이후에 시간을 설정해 주세요',
+                  gravity: ToastGravity.CENTER,
+                );
+
+                ref
+                    .read(meetingUpdateProvider(widget.meeting.id).notifier)
+                    .init(
+                      startTime: widget.meeting.startTime,
+                      endTime: widget.meeting.endTime,
+                    );
+              } else {
+                ref
+                    .read(meetingUpdateProvider(widget.meeting.id).notifier)
+                    .updateState(
+                      startTime: changedStartTime,
+                      endTime:
+                          changedStartTime.add(const Duration(minutes: 15)),
+                    );
+              }
+            }
+          },
+        );
+      },
+      child: Stack(
+        children: [
+          Container(
+            height: 44,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(width: 1, color: Pallete.darkGray),
+            ),
+            child: Center(
+              child: Text(
+                DataUtils.getDateString(model.startTime),
+                style: s1SubTitle.copyWith(color: Colors.white),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 18,
+            top: 11,
+            child: SvgPicture.asset(
+              SVGConstants.calendar,
+              height: 20,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _UserNameContainer extends StatelessWidget {
+  const _UserNameContainer({
+    required this.widget,
+  });
+
+  final MeetingUpdateScreen widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 44,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 1, color: Pallete.darkGray),
+      ),
+      child: Center(
+        child: Text(
+          widget.meeting.userNickname,
+          style: s1SubTitle.copyWith(
+            color: Pallete.gray,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DeleteButton extends StatelessWidget {
+  const _DeleteButton({
+    required this.ref,
+    required this.widget,
+  });
+
+  final WidgetRef ref;
+  final MeetingUpdateScreen widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () async {
+        try {
+          await ref
+              .read(meetingUpdateProvider(widget.meeting.id).notifier)
+              .deleteMeeting()
+              .then(
+            (value) {
+              DialogWidgets.showToast(
+                content: '미팅일정을 삭제했어요 ✅',
+                gravity: ToastGravity.CENTER,
+              );
+
+              ref
+                  .read(scheduleProvider.notifier)
+                  .deleteMeetingSchedule(model: widget.meeting);
+
+              context.pop();
+            },
+          );
+        } catch (e) {
+          DialogWidgets.oneButtonDialog(
+            message: '다시 시도해 주세요!',
+            confirmText: '확인',
+            confirmOnTap: () => context.pop(),
+          );
+        }
+      },
+      child: Text(
+        '삭제하기',
+        style: h6Headline.copyWith(color: Pallete.point),
       ),
     );
   }
