@@ -41,7 +41,7 @@ class MeetingCreateNotifier extends StateNotifier<PostMeetingModel> {
 
     if (now.minute > 30) {
       isOverHalfTime = true;
-      now.add(const Duration(hours: 1));
+      now = DateTime.now().add(const Duration(hours: 1));
     } else {
       isOverHalfTime = false;
     }
@@ -82,13 +82,8 @@ class MeetingCreateNotifier extends StateNotifier<PostMeetingModel> {
       final ret = await meetingRepository.postMeeting(model: pstate);
 
       return ret;
-    } on DioException catch (e) {
-      if (e.response != null) {
-        e.response!.statusCode == 409;
-        throw DioException(requestOptions: e.requestOptions);
-      } else {
-        rethrow;
-      }
+    } catch (e) {
+      rethrow;
     }
   }
 }

@@ -22,6 +22,6 @@ Map<String, dynamic> _$PostMeetingModelToJson(PostMeetingModel instance) =>
     <String, dynamic>{
       'trainerId': instance.trainerId,
       'userId': instance.userId,
-      'startTime': instance.startTime?.toIso8601String(),
-      'endTime': instance.endTime?.toIso8601String(),
+      'startTime': DataUtils.dateTimeToUTC(instance.startTime),
+      'endTime': DataUtils.dateTimeToUTC(instance.endTime),
     };

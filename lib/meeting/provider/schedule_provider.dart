@@ -159,18 +159,16 @@ class ScheduleStateNotifier extends StateNotifier<ScheduleModelBase> {
     if (pstate.data[scheduleIndex].schedule!.isEmpty) {
       pstate.data[scheduleIndex].schedule!.add(model);
     } else {
-      int index = binarySearch(
-        pstate.data[scheduleIndex].schedule!,
-        model,
-        compare: (p0, p1) {
-          final a = p0 as MeetingSchedule;
-          final b = p1 as MeetingSchedule;
+      int insertIndex =
+          pstate.data[scheduleIndex].schedule!.indexWhere((meeting) {
+        return (meeting.startTime.compareTo(model.startTime) >= 0);
+      });
 
-          return a.startTime.compareTo(b.startTime);
-        },
-      );
-
-      pstate.data[scheduleIndex].schedule!.insert(index, model);
+      if (insertIndex == -1) {
+        pstate.data[scheduleIndex].schedule!.add(model);
+      } else {
+        pstate.data[scheduleIndex].schedule!.insert(insertIndex, model);
+      }
     }
 
     state = pstate.copyWith();
@@ -188,35 +186,37 @@ class ScheduleStateNotifier extends StateNotifier<ScheduleModelBase> {
           schedule.startDate.day == originStartTime.day;
     });
 
+    //이전 meeting schedule에서 삭제
     pstate.data[beforeScheduleIndex].schedule!.removeWhere((element) {
       final meeting = element as MeetingSchedule;
 
       return meeting.id == model.id;
     });
 
+    //해당 일자 서치
     final afterScheduleIndex = pstate.data.indexWhere((schedule) {
       return schedule.startDate.year == model.startTime.year &&
           schedule.startDate.month == model.startTime.month &&
           schedule.startDate.day == model.startTime.day;
     });
 
+    //캐시에 없을경우 패스
     if (afterScheduleIndex == -1) return;
 
+    //해당 일자로 추가
     if (pstate.data[afterScheduleIndex].schedule!.isEmpty) {
       pstate.data[afterScheduleIndex].schedule!.add(model);
     } else {
-      int index = binarySearch(
-        pstate.data[afterScheduleIndex].schedule!,
-        model,
-        compare: (p0, p1) {
-          final a = p0 as MeetingSchedule;
-          final b = p1 as MeetingSchedule;
+      int insertIndex =
+          pstate.data[afterScheduleIndex].schedule!.indexWhere((meeting) {
+        return (meeting.startTime.compareTo(model.startTime) >= 0);
+      });
 
-          return a.startTime.compareTo(b.startTime);
-        },
-      );
-
-      pstate.data[afterScheduleIndex].schedule!.insert(index, model);
+      if (insertIndex == -1) {
+        pstate.data[afterScheduleIndex].schedule!.add(model);
+      } else {
+        pstate.data[afterScheduleIndex].schedule!.insert(insertIndex, model);
+      }
     }
 
     state = pstate.copyWith();

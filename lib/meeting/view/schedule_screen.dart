@@ -10,10 +10,12 @@ import 'package:fitend_trainer_app/meeting/compoenet/meeting_schedule_card.dart'
 import 'package:fitend_trainer_app/meeting/model/meeting_schedule_model.dart';
 import 'package:fitend_trainer_app/meeting/model/schedule_model.dart';
 import 'package:fitend_trainer_app/meeting/provider/schedule_provider.dart';
+import 'package:fitend_trainer_app/meeting/view/meeting_create_screen.dart';
 import 'package:fitend_trainer_app/thread/utils/thread_push_update_utils.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
 import 'package:fitend_trainer_app/trainer/provider/go_router.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -339,7 +341,9 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen>
           bottom: 20,
           child: FloatingActionButton(
             onPressed: () {
-              //TODO: 생성
+              Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) => const MeetingCreateScreen(),
+              ));
             },
             backgroundColor: Colors.transparent,
             child: SvgPicture.asset(SVGConstants.threadCreateButton),

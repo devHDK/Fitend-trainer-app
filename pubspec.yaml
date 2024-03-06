@@ -105,6 +105,8 @@ dependencies:
   line_icons: ^2.0.3
   toggle_switch: ^2.1.0
   sliding_up_panel: ^2.0.0+1
+  table_calendar: ^3.0.9
+  numberpicker: ^2.1.2
 
   #launch setting
   flutter_native_splash: ^2.2.19

@@ -1,3 +1,4 @@
+import 'package:fitend_trainer_app/common/utils/data_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_meeting_model.g.dart';
@@ -8,9 +9,15 @@ class PostMeetingModel {
   final int trainerId;
   @JsonKey(name: "userId")
   int? userId;
-  @JsonKey(name: "startTime")
+  @JsonKey(
+    name: "startTime",
+    toJson: DataUtils.dateTimeToUTC,
+  )
   DateTime? startTime;
-  @JsonKey(name: "endTime")
+  @JsonKey(
+    name: "endTime",
+    toJson: DataUtils.dateTimeToUTC,
+  )
   DateTime? endTime;
 
   PostMeetingModel({
