@@ -56,13 +56,18 @@ class MeetingUpdateNotifier extends StateNotifier<PutMeetingModel?> {
     try {
       final pstate = state!.copyWith();
       await meetingRepository.putMeeting(id: id, model: pstate);
-    } on DioException catch (e) {
-      if (e.response != null) {
-        e.response!.statusCode == 409;
-        throw DioException(requestOptions: e.requestOptions);
-      } else {
-        rethrow;
-      }
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteMeeting() async {
+    try {
+      await meetingRepository.deleteMeeting(
+        id: id,
+      );
+    } on DioException {
+      rethrow;
     }
   }
 }

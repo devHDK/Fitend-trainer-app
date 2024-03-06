@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:fitend_trainer_app/common/provider/shared_preference_provider.dart';
 import 'package:fitend_trainer_app/common/utils/data_utils.dart';
 import 'package:fitend_trainer_app/meeting/model/get_schedule_pagenate_params.dart';

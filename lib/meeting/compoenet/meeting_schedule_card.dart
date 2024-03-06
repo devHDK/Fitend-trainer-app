@@ -3,7 +3,10 @@ import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/meeting/model/meeting_schedule_model.dart';
+import 'package:fitend_trainer_app/meeting/view/meeting_update_screen.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
+import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -17,9 +20,9 @@ class MeetingScheduleCard extends ConsumerStatefulWidget {
   final DateTime startTime;
   final DateTime endTime;
   final bool? isDateVisible;
-  final int? id;
-  final String? status;
-  final String? userNickname;
+  final int id;
+  final String status;
+  final String userNickname;
   final String meetingLink;
   final bool selected;
 
@@ -32,9 +35,9 @@ class MeetingScheduleCard extends ConsumerStatefulWidget {
     required this.startTime,
     required this.endTime,
     this.isDateVisible = true,
-    this.id,
-    this.status,
-    this.userNickname,
+    required this.id,
+    required this.status,
+    required this.userNickname,
     required this.meetingLink,
   });
 
@@ -45,6 +48,9 @@ class MeetingScheduleCard extends ConsumerStatefulWidget {
     required Trainer trainer,
   }) {
     return MeetingScheduleCard(
+      id: model.id,
+      status: model.status,
+      userNickname: model.userNickname,
       date: date,
       title: '${model.userNickname} 회원님과 미팅이 있어요 👋',
       subTitle:
@@ -70,6 +76,8 @@ class _ScheduleCardState extends ConsumerState<MeetingScheduleCard> {
 
   @override
   Widget build(BuildContext context) {
+    final trainer = ref.watch(getMeProvider) as TrainerModel;
+
     return Container(
       height: widget.selected ? 175 : 130,
       width: 100.w,
@@ -195,7 +203,22 @@ class _ScheduleCardState extends ConsumerState<MeetingScheduleCard> {
                           widget: widget,
                           color: Pallete.point,
                           onTap: () {
-                            //TODO: 수정페이지
+                            Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => MeetingUpdateScreen(
+                                meeting: MeetingSchedule(
+                                  id: widget.id,
+                                  startTime: widget.startTime,
+                                  endTime: widget.endTime,
+                                  status: widget.status,
+                                  userNickname: widget.userNickname,
+                                  trainer: TrainerProfile(
+                                    id: trainer.trainer.id,
+                                    nickname: trainer.trainer.nickname,
+                                    profileImage: trainer.trainer.profileImage,
+                                  ),
+                                ),
+                              ),
+                            ));
                           },
                           child: Text(
                             '수정하기',
