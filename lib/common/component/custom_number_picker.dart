@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+List<int> minutesList = [15, 30, 45, 60];
+
 class CustomNumberPicker extends StatefulWidget {
   final int minute;
 
@@ -23,7 +25,11 @@ class _CustomNumberPickerState extends State<CustomNumberPicker> {
   @override
   void initState() {
     super.initState();
-    minute = widget.minute;
+    if (!minutesList.contains(widget.minute)) {
+      minute = 15;
+    } else {
+      minute = widget.minute;
+    }
   }
 
   @override
