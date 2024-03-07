@@ -30,6 +30,17 @@ class UserDetailScreen extends ConsumerStatefulWidget {
 
 class _UserDetailScreenState extends ConsumerState<UserDetailScreen> {
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (ref.read(userDetailProvider(widget.userId)) is UserDetailModelError) {
+        ref.read(userDetailProvider(widget.userId).notifier).init();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(userDetailProvider(widget.userId));
 

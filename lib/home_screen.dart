@@ -186,7 +186,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               height: 24,
             ),
             if (index == 2 && !notificationHomeModel.isConfirmed)
-              SvgPicture.asset(SVGConstants.redDot)
+              Positioned(
+                right: 0,
+                child: SvgPicture.asset(SVGConstants.redDot),
+              )
           ],
         ),
       ),
