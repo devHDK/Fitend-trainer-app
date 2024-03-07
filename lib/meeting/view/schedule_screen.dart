@@ -346,7 +346,7 @@ class ScheduleScreenState extends ConsumerState<ScheduleScreen>
               ));
             },
             backgroundColor: Colors.transparent,
-            child: SvgPicture.asset(SVGConstants.threadCreateButton),
+            child: SvgPicture.asset(SVGConstants.plusButton),
           ),
         ),
       ],

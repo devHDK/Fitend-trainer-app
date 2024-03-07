@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:fitend_trainer_app/common/dio/dio.dart';
 import 'package:fitend_trainer_app/user/model/get_user_list_model.dart';
+import 'package:fitend_trainer_app/user/model/user_detail_model.dart';
 import 'package:fitend_trainer_app/user/model/user_list_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
@@ -23,5 +24,12 @@ abstract class UserRepository {
   })
   Future<UserListModel> getUsers({
     @Queries() required GetUserListModel model,
+  });
+  @GET('/users/{id}')
+  @Headers({
+    'accessToken': 'true',
+  })
+  Future<UserDetailModel> getUserDetail({
+    @Path() required int id,
   });
 }
