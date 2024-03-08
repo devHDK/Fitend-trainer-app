@@ -58,70 +58,44 @@ class GetMeStateNotifier extends StateNotifier<TrainerModelBase?> {
 
   Future<void> getMe() async {
     try {
-      // checkStoreVersion().then((storeVersion) async {
-      //   debugPrint('$storeVersion');
-      //   if (storeVersion != null) {
-      //     bool isNeedStoreUpdate = storeVersion['needUpdate'];
-      //     if (isNeedStoreUpdate) {
-      //       //sotre 연결
-      //       state = TrainerModelError(
-      //           error: 'store version error', statusCode: 444);
-      //     } else {
-      //       final refreshToken =
-      //           await storage.read(key: StringConstants.refreshToken);
-      //       final accessToken =
-      //           await storage.read(key: StringConstants.accessToken);
+      checkStoreVersion().then((storeVersion) async {
+        debugPrint('$storeVersion');
+        if (storeVersion != null) {
+          bool isNeedStoreUpdate = storeVersion['needUpdate'];
+          if (isNeedStoreUpdate) {
+            //sotre 연결
+            state = TrainerModelError(
+                error: 'store version error', statusCode: 444);
+          } else {
+            final refreshToken =
+                await storage.read(key: StringConstants.refreshToken);
+            final accessToken =
+                await storage.read(key: StringConstants.accessToken);
 
-      //       if (refreshToken == null || accessToken == null) {
-      //         state = null;
-      //         return;
-      //       }
+            if (refreshToken == null || accessToken == null) {
+              state = null;
+              return;
+            }
 
-      //       final response = await repository.getMe();
+            final response = await repository.getMe();
 
-      //       final diviceId = await _getDeviceInfo();
-      //       final token = await FirebaseMessaging.instance.getToken();
+            final diviceId = await _getDeviceInfo();
+            final token = await FirebaseMessaging.instance.getToken();
 
-      //       debugPrint('diviceId : $diviceId');
-      //       debugPrint('fcm token : $token');
+            debugPrint('diviceId : $diviceId');
+            debugPrint('fcm token : $token');
 
-      //       await repository.putFCMToken(
-      //           putFcmToken: PutFcmToken(
-      //         deviceId: diviceId,
-      //         token: token!,
-      //         platform: Platform.isIOS ? 'ios' : 'android',
-      //       ));
+            await repository.putFCMToken(
+                putFcmToken: PutFcmToken(
+              deviceId: diviceId,
+              token: token!,
+              platform: Platform.isIOS ? 'ios' : 'android',
+            ));
 
-      //       state = response;
-      //     }
-      //   }
-      // });
-
-      final refreshToken =
-          await storage.read(key: StringConstants.refreshToken);
-      final accessToken = await storage.read(key: StringConstants.accessToken);
-
-      if (refreshToken == null || accessToken == null) {
-        state = null;
-        return;
-      }
-
-      final response = await repository.getMe();
-
-      final diviceId = await _getDeviceInfo();
-      final token = await FirebaseMessaging.instance.getToken();
-
-      debugPrint('diviceId : $diviceId');
-      debugPrint('fcm token : $token');
-
-      await repository.putFCMToken(
-          putFcmToken: PutFcmToken(
-        deviceId: diviceId,
-        token: token!,
-        platform: Platform.isIOS ? 'ios' : 'android',
-      ));
-
-      state = response;
+            state = response;
+          }
+        }
+      });
     } on DioException catch (e) {
       if (e.type == DioExceptionType.unknown) {
         state = TrainerModelError(error: 'connection error', statusCode: 504);

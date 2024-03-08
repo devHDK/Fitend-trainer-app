@@ -40,7 +40,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
         confirmOnTap: () {
           StoreRedirect.redirect(
             androidAppId: 'com.raid.fitend.trainer',
-            iOSAppId: 'id6450522413',
+            iOSAppId: 'id6478477753',
           );
         },
         dismissable: false,
