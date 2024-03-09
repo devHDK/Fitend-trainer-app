@@ -46,6 +46,8 @@ Future<Version> _fetchiOSVersion() async {
     throw 'Result Not Found';
   }
 
+  if (version == '1.0') version = '1.0.0';
+
   return Version.parse(version);
 }
 

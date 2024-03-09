@@ -15,6 +15,7 @@ class SVGConstants {
   static const String checkEmpty = '${_svgPath}icon_check.svg';
   static const String checkWhite = '${_svgPath}icon_check_white.svg';
   static const String clock = '${_svgPath}icon_clock.svg';
+  static const String create = '${_svgPath}icon_create.svg';
   static const String daymove = '${_svgPath}icon_daymove.svg';
   static const String edit = '${_svgPath}icon_edit.svg';
   static const String email = '${_svgPath}icon_email.svg';
@@ -51,9 +52,7 @@ class SVGConstants {
   static const String search = '${_svgPath}icon_search.svg';
   static const String stop = '${_svgPath}icon_stop.svg';
   static const String target = '${_svgPath}icon_target.svg';
-  static const String threadCreateButton =
-      '${_svgPath}icon_thread_create_button.svg';
-
+  static const String plusButton = '${_svgPath}icon_plus_button.svg';
   static const String timerRed = '${_svgPath}icon_timer_red.svg';
   static const String timerWhite = '${_svgPath}icon_timer_white.svg';
   static const String timer = '${_svgPath}icon_timer.svg';

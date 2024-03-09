@@ -12,6 +12,10 @@ import 'package:fitend_trainer_app/notifications/model/notification_setting_mode
 import 'package:fitend_trainer_app/notifications/provider/notification_home_screen_provider.dart';
 import 'package:fitend_trainer_app/notifications/provider/notification_provider.dart';
 import 'package:fitend_trainer_app/notifications/repository/notifications_repository.dart';
+import 'package:fitend_trainer_app/payroll/component/payroll_container.dart';
+import 'package:fitend_trainer_app/payroll/model/payroll_model.dart';
+import 'package:fitend_trainer_app/payroll/provider/user_detail_provider.dart';
+import 'package:fitend_trainer_app/payroll/view/payroll_screen.dart';
 import 'package:fitend_trainer_app/thread/component/profile_image.dart';
 import 'package:fitend_trainer_app/thread/provider/comment_create_provider.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_create_provider.dart';
@@ -24,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class MyPageScreen extends ConsumerStatefulWidget {
@@ -38,10 +43,14 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
   PackageInfo? packageInfo;
   String? version;
 
+  DateTime today = DataUtils.getDate(DateTime.now());
+  String todayString = '';
+
   @override
   void initState() {
     super.initState();
     getPackage();
+    todayString = DateFormat('yyyy-MM-dd').format(today);
   }
 
   void getPackage() async {
@@ -56,8 +65,12 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(getMeProvider);
+    final payrollState = ref.watch(payrollProvider(todayString));
 
-    if (state is TrainerModelLoading || state is TrainerModelError) {
+    if (state is TrainerModelLoading ||
+        state is TrainerModelError ||
+        payrollState is PayrollModelLoading ||
+        payrollState is PayrollModelError) {
       return const Center(
           child: CircularProgressIndicator(
         color: Pallete.point,
@@ -65,6 +78,7 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
     }
 
     final model = state as TrainerModel;
+    final payrollModel = payrollState as PayrollModel;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -89,6 +103,29 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
             model.trainer.nickname,
             style: h4Headline.copyWith(
               color: Colors.white,
+            ),
+          ),
+          const SizedBox(
+            height: 17,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (context) => const PayrollScreen(),
+                ),
+              );
+            },
+            child: PayrollContainer(
+              title: '이번달 정산',
+              subTile: '(오늘 기준)',
+              content:
+                  '${NumberFormat('#,###').format(payrollModel.wageInfo.wage)} 원',
+              child: const Icon(
+                Icons.arrow_forward_ios,
+                color: Pallete.lightGray,
+                size: 12,
+              ),
             ),
           ),
           const SizedBox(
