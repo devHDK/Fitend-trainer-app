@@ -6,4 +6,5 @@ class Pallete {
   static const lightGray = Color(0xFFD9D9D9);
   static const gray = Color(0xFF848484);
   static const darkGray = Color(0xFF4B4B4B);
+  static const zoomBlue = Color(0xFF0B5CFF);
 }

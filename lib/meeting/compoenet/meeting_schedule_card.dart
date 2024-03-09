@@ -3,7 +3,10 @@ import 'package:fitend_trainer_app/common/const/data_constants.dart';
 import 'package:fitend_trainer_app/common/const/pallete.dart';
 import 'package:fitend_trainer_app/common/const/text_style.dart';
 import 'package:fitend_trainer_app/meeting/model/meeting_schedule_model.dart';
+import 'package:fitend_trainer_app/meeting/view/meeting_update_screen.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
+import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -17,9 +20,9 @@ class MeetingScheduleCard extends ConsumerStatefulWidget {
   final DateTime startTime;
   final DateTime endTime;
   final bool? isDateVisible;
-  final int? id;
-  final String? status;
-  final String? userNickname;
+  final int id;
+  final String status;
+  final String userNickname;
   final String meetingLink;
   final bool selected;
 
@@ -32,21 +35,24 @@ class MeetingScheduleCard extends ConsumerStatefulWidget {
     required this.startTime,
     required this.endTime,
     this.isDateVisible = true,
-    this.id,
-    this.status,
-    this.userNickname,
+    required this.id,
+    required this.status,
+    required this.userNickname,
     required this.meetingLink,
   });
 
   factory MeetingScheduleCard.fromMeetingSchedule({
-    required MeetigSchedule model,
+    required MeetingSchedule model,
     DateTime? date,
     bool? isDateVisible,
     required Trainer trainer,
   }) {
     return MeetingScheduleCard(
+      id: model.id,
+      status: model.status,
+      userNickname: model.userNickname,
       date: date,
-      title: '${model.userNickname} 회원님 과 미팅이 있어요 👋',
+      title: '${model.userNickname} 회원님과 미팅이 있어요 👋',
       subTitle:
           '${DateFormat('HH:mm').format(model.startTime.toUtc().toLocal())} ~ ${DateFormat('HH:mm').format(model.endTime.toUtc().toLocal())} (${model.endTime.difference(model.startTime.toUtc().toLocal()).inMinutes}분)',
       selected: model.selected!,
@@ -70,6 +76,8 @@ class _ScheduleCardState extends ConsumerState<MeetingScheduleCard> {
 
   @override
   Widget build(BuildContext context) {
+    final trainer = ref.watch(getMeProvider) as TrainerModel;
+
     return Container(
       height: widget.selected ? 175 : 130,
       width: 100.w,
@@ -186,46 +194,76 @@ class _ScheduleCardState extends ConsumerState<MeetingScheduleCard> {
                   const SizedBox(
                     height: 23,
                   ),
-                  SizedBox(
-                    width: 100.w,
-                    height: 44,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Pallete.point,
-                      ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent, elevation: 0),
-                        onPressed: () {
-                          launchUrl(
-                            Uri.parse(widget.meetingLink),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.videocam,
-                              size: 19,
-                              color: Pallete.lightGray,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              'Zoom',
-                              style: h6Headline.copyWith(
-                                color: Colors.white,
-                                height: 1,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: _Button(
+                          widget: widget,
+                          color: Pallete.point,
+                          onTap: () {
+                            Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => MeetingUpdateScreen(
+                                meeting: MeetingSchedule(
+                                  id: widget.id,
+                                  startTime: widget.startTime,
+                                  endTime: widget.endTime,
+                                  status: widget.status,
+                                  userNickname: widget.userNickname,
+                                  trainer: TrainerProfile(
+                                    id: trainer.trainer.id,
+                                    nickname: trainer.trainer.nickname,
+                                    profileImage: trainer.trainer.profileImage,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                            ));
+                          },
+                          child: Text(
+                            '수정하기',
+                            style: h6Headline.copyWith(color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                  )
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: _Button(
+                          widget: widget,
+                          color: Pallete.zoomBlue,
+                          onTap: () {
+                            launchUrl(
+                              Uri.parse(widget.meetingLink),
+                              mode: LaunchMode.externalApplication,
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.videocam,
+                                size: 19,
+                                color: Pallete.lightGray,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Zoom',
+                                style: h6Headline.copyWith(
+                                  color: Colors.white,
+                                  height: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             if (!widget.selected)
@@ -238,6 +276,40 @@ class _ScheduleCardState extends ConsumerState<MeetingScheduleCard> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _Button extends StatelessWidget {
+  const _Button({
+    required this.widget,
+    required this.child,
+    required this.color,
+    required this.onTap,
+  });
+
+  final MeetingScheduleCard widget;
+  final Widget child;
+  final Color color;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 44,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: color,
+        ),
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent, elevation: 0),
+            onPressed: () {
+              onTap();
+            },
+            child: child),
       ),
     );
   }

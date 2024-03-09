@@ -97,6 +97,24 @@ class DataUtils {
     return ret;
   }
 
+  static String getDateString(DateTime date) {
+    //string 0000.00.00
+
+    String ret =
+        '${date.year}. ${date.month.toString().padLeft(2, '0')}. ${date.day.toString().padLeft(2, '0')} ';
+
+    return ret;
+  }
+
+  static String getTimeString(DateTime date) {
+    //string 0000.00.00
+
+    String ret =
+        '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+
+    return ret;
+  }
+
   static String getTimerString(int seconds) {
     String ret = '';
 
@@ -213,6 +231,15 @@ class DataUtils {
     DateTime tempDate = DateTime.parse(date).toUtc().toLocal();
 
     return tempDate;
+  }
+
+  static String? dateTimeToUTC(DateTime? date) {
+    if (date != null) {
+      DateTime tempDate = date.toUtc();
+      return tempDate.toString();
+    }
+
+    return null;
   }
 
   static bool isBetweenFriday2PMAndSundayMidnight() {
