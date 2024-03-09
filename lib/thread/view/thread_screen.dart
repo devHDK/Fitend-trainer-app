@@ -20,6 +20,7 @@ import 'package:fitend_trainer_app/thread/view/thread_detail_screen.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
 import 'package:fitend_trainer_app/trainer/provider/go_router.dart';
+import 'package:fitend_trainer_app/user/view/user_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -262,6 +263,28 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
                 padding: EdgeInsets.only(left: 10),
                 child: Icon(Icons.arrow_back)),
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 28),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) =>
+                          UserDetailScreen(userId: widget.user.id),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                },
+                child: SvgPicture.asset(SVGConstants.guide,
+                    width: 22,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
+                    )),
+              ),
+            ),
+          ],
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -283,7 +306,7 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
             state.data.isEmpty
                 ? Center(
                     child: Text(
-                      '아직 회원님과 함께한 쓰레드가 없어요 🙂',
+                      '회원님께 스레드를 남겨보세요 😊',
                       style: s2SubTitle.copyWith(
                         color: Colors.white,
                       ),
@@ -478,8 +501,8 @@ class ThreadScreenState extends ConsumerState<ThreadScreen>
                       ),
                     );
                   },
-                  backgroundColor: Colors.transparent,
-                  child: SvgPicture.asset(SVGConstants.threadCreateButton),
+                  backgroundColor: Pallete.point,
+                  child: SvgPicture.asset(SVGConstants.create),
                 ),
               ),
           ],

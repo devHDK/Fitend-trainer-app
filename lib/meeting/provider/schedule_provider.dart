@@ -1,6 +1,7 @@
 import 'package:fitend_trainer_app/common/provider/shared_preference_provider.dart';
 import 'package:fitend_trainer_app/common/utils/data_utils.dart';
 import 'package:fitend_trainer_app/meeting/model/get_schedule_pagenate_params.dart';
+import 'package:fitend_trainer_app/meeting/model/meeting_schedule_model.dart';
 import 'package:fitend_trainer_app/meeting/model/schedule_model.dart';
 import 'package:fitend_trainer_app/meeting/repository/meeting_schedule_repository.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
@@ -141,5 +142,102 @@ class ScheduleStateNotifier extends StateNotifier<ScheduleModelBase> {
     pstate.scrollIndex = scrollIndex;
 
     state = pstate;
+  }
+
+  void addMeetingSchedule({required MeetingSchedule model}) {
+    final pstate = state as ScheduleModel;
+
+    final scheduleIndex = pstate.data.indexWhere((schedule) {
+      return schedule.startDate.year == model.startTime.year &&
+          schedule.startDate.month == model.startTime.month &&
+          schedule.startDate.day == model.startTime.day;
+    });
+
+    if (scheduleIndex == -1) return;
+
+    if (pstate.data[scheduleIndex].schedule!.isEmpty) {
+      pstate.data[scheduleIndex].schedule!.add(model);
+    } else {
+      int insertIndex =
+          pstate.data[scheduleIndex].schedule!.indexWhere((meeting) {
+        return (meeting.startTime.compareTo(model.startTime) >= 0);
+      });
+
+      if (insertIndex == -1) {
+        pstate.data[scheduleIndex].schedule!.add(model);
+      } else {
+        pstate.data[scheduleIndex].schedule!.insert(insertIndex, model);
+      }
+    }
+
+    state = pstate.copyWith();
+  }
+
+  void updateMeetingSchedule({
+    required DateTime originStartTime,
+    required MeetingSchedule model,
+  }) {
+    final pstate = state as ScheduleModel;
+
+    final beforeScheduleIndex = pstate.data.indexWhere((schedule) {
+      return schedule.startDate.year == originStartTime.year &&
+          schedule.startDate.month == originStartTime.month &&
+          schedule.startDate.day == originStartTime.day;
+    });
+
+    //이전 meeting schedule에서 삭제
+    pstate.data[beforeScheduleIndex].schedule!.removeWhere((element) {
+      final meeting = element as MeetingSchedule;
+
+      return meeting.id == model.id;
+    });
+
+    //해당 일자 서치
+    final afterScheduleIndex = pstate.data.indexWhere((schedule) {
+      return schedule.startDate.year == model.startTime.year &&
+          schedule.startDate.month == model.startTime.month &&
+          schedule.startDate.day == model.startTime.day;
+    });
+
+    //캐시에 없을경우 패스
+    if (afterScheduleIndex == -1) return;
+
+    //해당 일자로 추가
+    if (pstate.data[afterScheduleIndex].schedule!.isEmpty) {
+      pstate.data[afterScheduleIndex].schedule!.add(model);
+    } else {
+      int insertIndex =
+          pstate.data[afterScheduleIndex].schedule!.indexWhere((meeting) {
+        return (meeting.startTime.compareTo(model.startTime) >= 0);
+      });
+
+      if (insertIndex == -1) {
+        pstate.data[afterScheduleIndex].schedule!.add(model);
+      } else {
+        pstate.data[afterScheduleIndex].schedule!.insert(insertIndex, model);
+      }
+    }
+
+    state = pstate.copyWith();
+  }
+
+  void deleteMeetingSchedule({
+    required MeetingSchedule model,
+  }) {
+    final pstate = state as ScheduleModel;
+
+    final index = pstate.data.indexWhere((schedule) {
+      return schedule.startDate.year == model.startTime.year &&
+          schedule.startDate.month == model.startTime.month &&
+          schedule.startDate.day == model.startTime.day;
+    });
+
+    pstate.data[index].schedule!.removeWhere((element) {
+      final meeting = element as MeetingSchedule;
+
+      return meeting.id == model.id;
+    });
+
+    state = pstate.copyWith();
   }
 }

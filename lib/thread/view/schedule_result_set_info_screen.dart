@@ -133,16 +133,19 @@ class _ScheduleResultSetInfoScreenState
                         ),
                         child: Column(
                           children: [
-                            ...widget.exercises[index].setInfo.map((set) {
-                              switch (widget.exercises[index].trackingFieldId) {
-                                case 1:
-                                  return _setInfoCellWeightReps(set);
-                                case 2:
-                                  return _setInfoCellReps(set);
-                                default:
-                                  return _setInfoCellTimer(set);
-                              }
-                            })
+                            ...widget.exercises[index].recordSetInfo.map(
+                              (set) {
+                                switch (
+                                    widget.exercises[index].trackingFieldId) {
+                                  case 1:
+                                    return _setInfoCellWeightReps(set);
+                                  case 2:
+                                    return _setInfoCellReps(set);
+                                  default:
+                                    return _setInfoCellTimer(set);
+                                }
+                              },
+                            )
                           ],
                         ),
                       ),
