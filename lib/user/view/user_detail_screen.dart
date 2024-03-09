@@ -163,7 +163,7 @@ class _UserDetailScreenState extends ConsumerState<UserDetailScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '설문 결과',
+          '설문결과',
           style: h4Headline.copyWith(color: Colors.white),
         ),
         const SizedBox(height: 12),
@@ -229,7 +229,7 @@ class _UserDetailScreenState extends ConsumerState<UserDetailScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '운동 환경',
+          '운동환경',
           style: h4Headline.copyWith(color: Colors.white),
         ),
         const SizedBox(height: 12),

@@ -35,7 +35,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
 
     if (state is TrainerModelError && state.statusCode == 444) {
       return DialogWidgets.oneButtonDialog(
-        message: '회원님들의 의견을 반영하여\n서비스 사용성을 개선했어요 🎉',
+        message: '새로운 업데이트가 있어요!',
         confirmText: '업데이트 하러 가기',
         confirmOnTap: () {
           StoreRedirect.redirect(

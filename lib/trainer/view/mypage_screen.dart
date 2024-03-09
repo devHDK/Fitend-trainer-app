@@ -44,13 +44,13 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
   String? version;
 
   DateTime today = DataUtils.getDate(DateTime.now());
-  String thisMonth = '';
+  String todayString = '';
 
   @override
   void initState() {
     super.initState();
     getPackage();
-    thisMonth = DateFormat('yyyy-MM').format(today);
+    todayString = DateFormat('yyyy-MM-dd').format(today);
   }
 
   void getPackage() async {
@@ -65,7 +65,7 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(getMeProvider);
-    final payrollState = ref.watch(payrollProvider(thisMonth));
+    final payrollState = ref.watch(payrollProvider(todayString));
 
     if (state is TrainerModelLoading ||
         state is TrainerModelError ||
