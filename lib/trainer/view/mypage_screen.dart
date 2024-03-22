@@ -23,6 +23,7 @@ import 'package:fitend_trainer_app/thread/provider/thread_detail_provider.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_provider.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
+import 'package:fitend_trainer_app/trainer/view/trainer_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -166,6 +167,21 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
                   ),
                 ),
               )),
+          const Divider(
+            color: Pallete.darkGray,
+            height: 1,
+          ),
+          InkWell(
+            onTap: () => Navigator.of(context).push(
+              CupertinoPageRoute(
+                builder: (context) => const TrainerDetailScreen(),
+              ),
+            ),
+            child: _renderLabel(
+              name: '코치 프로필',
+              child: SvgPicture.asset(SVGConstants.next),
+            ),
+          ),
           const Divider(
             color: Pallete.darkGray,
             height: 1,
