@@ -34,6 +34,12 @@ class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen>
   bool isLoading = false;
   int start = 0;
 
+  DateTime today = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -177,8 +183,9 @@ class ThreadUserListScreenState extends ConsumerState<ThreadUserListScreen>
                           ticketType = '이용중인 상품 없음';
                         } else {
                           final ticket = model.availableTickets!.first;
-                          final remainDate =
-                              ticket.expiredAt.difference(DateTime.now());
+                          final remainDate = ticket.expiredAt
+                              .add(const Duration(days: 1))
+                              .difference(today);
 
                           if (ticket.type == 'personal') {
                             ticketType = 'PT ∙ ${remainDate.inDays}일 남음';
