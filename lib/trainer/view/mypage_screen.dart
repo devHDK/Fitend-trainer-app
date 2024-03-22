@@ -23,6 +23,7 @@ import 'package:fitend_trainer_app/thread/provider/thread_detail_provider.dart';
 import 'package:fitend_trainer_app/thread/provider/thread_provider.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:fitend_trainer_app/trainer/provider/get_me_provider.dart';
+import 'package:fitend_trainer_app/trainer/provider/trainer_detail_provider.dart';
 import 'package:fitend_trainer_app/trainer/view/trainer_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,12 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
     super.initState();
     getPackage();
     todayString = DateFormat('yyyy-MM-dd').format(today);
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (ref.read(payrollProvider(todayString)) is PayrollModelError) {
+        ref.read(payrollProvider(todayString).notifier).init();
+      }
+    });
   }
 
   void getPackage() async {
@@ -245,6 +252,8 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
                     ref.invalidate(notificationHomeProvider);
 
                     ref.invalidate(homeStateProvider);
+                    ref.invalidate(trainerDetailProvider);
+                    ref.invalidate(payrollProvider);
                   },
                   cancelOnTap: () => context.pop(),
                 ),
