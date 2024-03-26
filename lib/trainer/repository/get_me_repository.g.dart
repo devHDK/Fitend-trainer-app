@@ -47,6 +47,34 @@ class _GetMeRepository implements GetMeRepository {
   }
 
   @override
+  Future<TrainerDetailModel> getTrainerDetail() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'accessToken': 'true'};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<TrainerDetailModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/trainers/detail',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = TrainerDetailModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<void> putFCMToken({required PutFcmToken putFcmToken}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

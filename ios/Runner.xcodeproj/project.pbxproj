@@ -591,7 +591,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -654,7 +654,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -674,6 +674,7 @@
 				DEVELOPMENT_TEAM = 87KG3K3857;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -692,6 +693,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-local";
@@ -702,6 +704,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-local";
@@ -712,6 +715,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-local";
@@ -722,6 +726,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-development";
@@ -732,6 +737,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-development";
@@ -742,6 +748,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-development";
@@ -752,6 +759,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-production";
@@ -762,6 +770,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-production";
@@ -772,6 +781,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-production";
@@ -781,6 +791,7 @@
 			baseConfigurationReference = 60BDC55DEF34524C874E7228 /* Pods-RunnerTests.debug-local.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Debug-local";
@@ -790,6 +801,7 @@
 			baseConfigurationReference = BB72A573555D4C62692CECD8 /* Pods-RunnerTests.profile-local.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Profile-local";
@@ -799,6 +811,7 @@
 			baseConfigurationReference = 615F29637B0D41F83C48DCA4 /* Pods-RunnerTests.release-local.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Release-local";
@@ -808,6 +821,7 @@
 			baseConfigurationReference = B77E9B60916AA55DAE120ECA /* Pods-RunnerTests.debug-development.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Debug-development";
@@ -817,6 +831,7 @@
 			baseConfigurationReference = D71D950185CC3ED489E51477 /* Pods-RunnerTests.profile-development.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Profile-development";
@@ -826,6 +841,7 @@
 			baseConfigurationReference = 971B35690FD5C544E8685575 /* Pods-RunnerTests.release-development.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Release-development";
@@ -835,6 +851,7 @@
 			baseConfigurationReference = B21FC03E99A2DC02072EEB33 /* Pods-RunnerTests.debug-production.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Debug-production";
@@ -844,6 +861,7 @@
 			baseConfigurationReference = 5F89B68397170869763E120B /* Pods-RunnerTests.profile-production.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Profile-production";
@@ -853,6 +871,7 @@
 			baseConfigurationReference = 5E7A82280ABA20C91523EE39 /* Pods-RunnerTests.release-production.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 87KG3K3857;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Release-production";
@@ -866,6 +885,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87KG3K3857;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.fitendTrainerApp.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -885,6 +905,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87KG3K3857;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.fitendTrainerApp.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -902,6 +923,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 87KG3K3857;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.fitendTrainerApp.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -964,7 +986,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1037,7 +1059,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1104,7 +1126,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1171,7 +1193,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1220,7 +1242,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -1242,6 +1264,7 @@
 				DEVELOPMENT_TEAM = 87KG3K3857;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1266,6 +1289,7 @@
 				DEVELOPMENT_TEAM = 87KG3K3857;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1332,7 +1356,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1399,7 +1423,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1469,7 +1493,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1537,7 +1561,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1607,7 +1631,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

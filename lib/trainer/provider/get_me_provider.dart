@@ -155,7 +155,7 @@ class GetMeStateNotifier extends StateNotifier<TrainerModelBase?> {
             );
           } else if (e.response!.statusCode! == 403) {
             state = TrainerModelError(
-              error: '이용 중인 수강권이 없어요 😰',
+              error: '사용할 수 없는 계정입니다. 관리자에게 문의해 주세요!',
               statusCode: e.response!.statusCode!,
             );
           } else {

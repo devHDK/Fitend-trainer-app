@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:fitend_trainer_app/common/dio/dio.dart';
 import 'package:fitend_trainer_app/trainer/model/put_fcm_token.dart';
+import 'package:fitend_trainer_app/trainer/model/trainer_detail_model.dart';
 import 'package:fitend_trainer_app/trainer/model/trainer_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
@@ -22,6 +23,12 @@ abstract class GetMeRepository {
     'accessToken': 'true',
   })
   Future<TrainerModel> getMe();
+
+  @GET('/trainers/detail')
+  @Headers({
+    'accessToken': 'true',
+  })
+  Future<TrainerDetailModel> getTrainerDetail();
 
   @PUT('/trainers/fcmToken')
   @Headers({
